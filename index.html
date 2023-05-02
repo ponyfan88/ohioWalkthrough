@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./index.css" />
+        <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+
+        <title>hi hungry</title>
+    </head>
+    <body>
+        <div id="instructions">
+			<div>
+				<h1>Click to begin</h1>
+				
+				Interact: LEFT MOUSE CLICK<br/>
+				Move: W-A-S-D or ARROWS<br/>
+				Run: SHIFT<br/>
+				Look: MOUSE
+			</div>
+		</div>
+
+        <script src="./js/libraries/threejs/three.min.js"></script>
+
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "./js/libraries/threejs/three.module.js",
+                    "three/addons/": "./js/libraries/threejs/jsm/"
+                }
+            }
+        </script>
+        <!-- START LOAD BASED SINGLE FUNCTION FILES -->
+
+        <script src="./js/painting.js"></script>
+
+        <!-- END LOAD BASED SINGLE FUNCTION FILES -->
+        <script src="index.js" type="module"></script>
+    </body>
+</html>
