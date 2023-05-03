@@ -84,6 +84,19 @@
     opacity: 0;
 }
 
+#crosshair.enabled {
+    user-select: none;
+    background-color: #ffffff;
+    width: 5px;
+    height: 5px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    border-radius: 50%;
+    content: '';
+    transform: translate(-50%,-50%);
+}
+
 body,
 html,
 #canvasse {

@@ -266,7 +266,8 @@ if (havePointerLock) {
     instructions.innerHTML = "Your browser not suported PointerLock";
 }
 
-let description = document.getElementById("description")
+let description = document.getElementById("description");
+let crosshair = document.getElementById("crosshair")
 
 let camera
 let scene
@@ -396,6 +397,7 @@ function animate() {
     });
 
     if (controls.enabled) {
+        crosshair.classList = "enabled"
         controls.update();
 
         raycaster.set(
@@ -431,6 +433,9 @@ function animate() {
                 particles[pLength].prototype.update(pLength);
             }
         }
+    }
+    else {
+        crosshair.classList = ""
     }
 
     renderer.render(scene, camera);
