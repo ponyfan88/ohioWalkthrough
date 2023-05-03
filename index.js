@@ -369,6 +369,8 @@ function init() {
 
     mapData.paintings.forEach(paintingJSON => {
         painting = makePaintingFromJSON(paintingJSON);
+        painting.userData.type = paintingJSON.type;
+        painting.userData.data = paintingJSON.data;
         world.add(painting);
         
         if (paintingJSON.id != "") {
@@ -401,8 +403,8 @@ function animate() {
                 console.log(intersect);
                 intersect.object.rotation.y += 0.1;
 
-                if (intersect.object.userData.activated != null) {
-                    intersect.object.userData.activated();
+                if (intersect.object.userData.type = "painting-clickable") {
+                    console.log(intersect.object.userData.data.description)
                 }
             }
         }

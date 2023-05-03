@@ -1,24 +1,102 @@
 {
-    "paintings" : [
+    "paintings": [
         {
             "id": "cbus",
-            "pos": { "x": 0, "y": 60, "z": -300 },
+            "pos": { "x": 0, "y": 60, "z": -100 },
             "side": 4,
             "texture": "signs/my-awesome-label.gif",
-            "size": { "x": "174.736842", "y": 20, "z": 0.1 },
+            "size": { "x": "87.368421", "y": 10, "z": 0.1 },
             "transparent": false,
             "pixelated": true,
-            "doublesided": false
+            "doublesided": false,
+            "type": "rotating-sign",
+            "data": {
+                "rotation-amount": 0.01
+            }
         },
         {
             "id": "",
-            "pos": { "x": 0, "y": 20, "z": -300 },
-            "side": 4,
+            "pos": { "x": -30, "y": 30, "z": -100 },
+            "side": 0,
             "texture": "paintings/default.png",
             "size": 20,
             "transparent": false,
             "pixelated": false,
-            "doublesided": false
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "this is a pretty epic test"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": 30, "y": 30, "z": -100 },
+            "side": 1,
+            "texture": "paintings/default.png",
+            "size": 20,
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "this is a pretty epic test"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": -30, "y": 30, "z": -150 },
+            "side": 0,
+            "texture": "paintings/default.png",
+            "size": 20,
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "this is a pretty epic test"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": 30, "y": 30, "z": -150 },
+            "side": 1,
+            "texture": "paintings/default.png",
+            "size": 20,
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "this is a pretty epic test"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": -30, "y": 30, "z": -200 },
+            "side": 0,
+            "texture": "paintings/default.png",
+            "size": 20,
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "this is a pretty epic test"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": 30, "y": 30, "z": -200 },
+            "side": 1,
+            "texture": "paintings/default.png",
+            "size": 20,
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "this is a pretty epic test"
+            }
         }
     ]
 }
