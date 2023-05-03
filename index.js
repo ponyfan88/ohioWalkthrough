@@ -1,4 +1,4 @@
-import mapData from './map.json' assert { type: 'json' };
+import mapData from "./map.json" assert { type: "json" };
 
 THREE.FirstPersonControls = function (
     camera,
@@ -369,18 +369,18 @@ function init() {
 
     let painting;
 
-    mapData.paintings.forEach(paintingJSON => {
+    mapData.paintings.forEach((paintingJSON) => {
         painting = makePaintingFromJSON(paintingJSON);
         painting.userData.type = paintingJSON.type;
         painting.userData.data = paintingJSON.data;
         world.add(painting);
-        
+
         if (paintingJSON.id != "") {
             uniquePaintings[paintingJSON.id] = painting;
         }
 
         if (paintingJSON.type == "rotating-sign") {
-            rotatingSigns.push(painting)
+            rotatingSigns.push(painting);
         }
     });
 
@@ -390,11 +390,11 @@ function init() {
 function animate() {
     requestAnimationFrame(animate);
 
-    rotatingSigns.forEach(element => {
-        element.rotation.y += element.userData.data.rotationAmount
+    rotatingSigns.forEach((element) => {
+        element.rotation.y += element.userData.data.rotationAmount;
     });
 
-    if (controls.enabled === true) {
+    if (controls.enabled) {
         controls.update();
 
         raycaster.set(
@@ -402,18 +402,18 @@ function animate() {
             camera.getWorldDirection(new THREE.Vector3())
         );
 
-        if (controls.click === true) {
-            let intersects = raycaster.intersectObjects(world.children);
+        let intersects = raycaster.intersectObjects(world.children);
 
-            if (intersects.length > 0) {
-                let intersect = intersects[0];
+        if (intersects.length > 0) {
+            let intersect = intersects[0];
+            if (controls.click) {
                 makeParticles(intersect.point);
-                console.log(intersect);
-                intersect.object.rotation.y += 0.1;
+            }
+            console.log(intersect);
+            //intersect.object.rotation.y += 0.1;
 
-                if (intersect.object.userData.type = "painting-clickable") {
-                    console.log(intersect.object.userData.data.description)
-                }
+            if (intersect.object.userData.type == "painting-clickable") {
+                console.log(intersect.object.userData.data.description);
             }
         }
 
