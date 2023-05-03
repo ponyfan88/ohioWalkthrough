@@ -266,7 +266,14 @@ if (havePointerLock) {
     instructions.innerHTML = "Your browser not suported PointerLock";
 }
 
-let camera, scene, renderer, controls, raycaster, arrow, world;
+let description = document.getElementById("description")
+
+let camera
+let scene
+let renderer
+let controls
+let raycaster
+let world;
 
 let uniquePaintings = {};
 
@@ -294,12 +301,6 @@ function init() {
     raycaster = new THREE.Raycaster(
         camera.getWorldPosition(new THREE.Vector3()),
         camera.getWorldDirection(new THREE.Vector3())
-    );
-    arrow = new THREE.ArrowHelper(
-        camera.getWorldDirection(new THREE.Vector3()),
-        camera.getWorldPosition(new THREE.Vector3()),
-        3,
-        0x000000
     );
 
     scene = new THREE.Scene();

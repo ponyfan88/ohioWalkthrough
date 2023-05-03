@@ -35,6 +35,41 @@
     cursor: pointer;
 }
 
+#description {
+    width: 90vh;
+    height: 20vh;
+    
+    user-select: none;
+    text-shadow: 1px 1px 1px #9E9E9E;
+    
+    position: fixed;
+    background-color: rgba(0,0,0,0.5);
+
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    box-orient: horizontal;
+
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    box-pack: center;
+
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    box-align: center;
+
+    color: #ffffff;
+    text-align: center;
+    font-family: Arial;
+    font-size: 14px;
+    line-height: 24px;
+
+    cursor: pointer;
+}
+
 body, html, #canvasse {
     margin: 0;
     padding: 0;
