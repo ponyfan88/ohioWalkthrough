@@ -410,12 +410,13 @@ function animate() {
             if (controls.click) {
                 makeParticles(intersect.point);
             }
-            console.log(intersect);
-            //intersect.object.rotation.y += 0.1;
+            //console.log(intersect);
 
             if (intersect.object.userData.type == "painting-clickable") {
-                console.log(intersect.object.userData.data.description);
+                description.innerText = intersect.object.userData.data.description
             }
+        } else {
+            description.innerText = ""
         }
 
         if (particles.length > 0) {
