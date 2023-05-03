@@ -48,6 +48,7 @@ let makePainting = function (
 
     let paintingMaterial = new THREE.MeshBasicMaterial({
         map: loader.load(sideTexturePath),
+        transparent: true,
     });
 
     if (pixelated) {
@@ -131,6 +132,7 @@ let makePaintingFromJSON = function (json) {
 
     let paintingMaterial = new THREE.MeshBasicMaterial({
         map: loader.load(json.texture),
+        transparent: true,
     });
 
     if (json.pixelated) {
