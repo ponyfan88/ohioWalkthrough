@@ -414,12 +414,15 @@ function animate() {
 
             if (intersect.object.userData.type == "painting-clickable") {
                 description.innerText = intersect.object.userData.data.description
+                description.classList = "enabled"
             }
             else {
-                description.innerText = ""
+                //description.innerText = ""
+                description.classList = ""
             }
         } else {
-            description.innerText = ""
+            //description.innerText = ""
+            description.classList = ""
         }
 
         if (particles.length > 0) {
