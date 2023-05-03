@@ -4,11 +4,11 @@
             "id": "cbus",
             "pos": { "x": 0, "y": 60, "z": -100 },
             "side": 4,
-            "texture": "signs/my-awesome-label.gif",
+            "texture": "signs/my-awesome-label.png",
             "size": { "x": "87.368421", "y": 10, "z": 0.1 },
-            "transparent": false,
+            "transparent": true,
             "pixelated": true,
-            "doublesided": false,
+            "doublesided": true,
             "type": "rotating-sign",
             "data": {
                 "rotationAmount": 0.01
