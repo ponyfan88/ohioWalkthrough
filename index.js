@@ -415,6 +415,9 @@ function animate() {
             if (intersect.object.userData.type == "painting-clickable") {
                 description.innerText = intersect.object.userData.data.description
             }
+            else {
+                description.innerText = ""
+            }
         } else {
             description.innerText = ""
         }
