@@ -37,10 +37,10 @@ let makePainting = function(
     pixelated = true,
     doubleSided = false
 ) {
-    let sideTextures = blankPaintingSideTextures;
+    let sideTextures = [...blankPaintingSideTextures];
 
     if (transparent) {
-        sideTextures = transParentPaintingSideTextures;
+        sideTextures = [...transParentPaintingSideTextures];
     }
 
     let loader = new THREE.TextureLoader();
