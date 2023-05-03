@@ -1,3 +1,5 @@
+import mapData from './map.json' assert { type: 'json' };
+
 THREE.FirstPersonControls = function (
     camera,
     MouseMoveSensitivity = 0.002,
@@ -266,14 +268,20 @@ if (havePointerLock) {
 
 let camera, scene, renderer, controls, raycaster, arrow, world;
 
-let columbusSign;
+let uniquePaintings = {};
 
 init();
 animate();
 
 function init() {
     camera = new THREE.PerspectiveCamera(
-        2 * Math.atan(Math.tan(45) / (16/10 * window.innerWidth / window.innerHeight)) * 180 / Math.PI,
+        (2 *
+            Math.atan(
+                Math.tan(45) /
+                    (((16 / 10) * window.innerWidth) / window.innerHeight)
+            ) *
+            180) /
+            Math.PI,
         window.innerWidth / window.innerHeight,
         1,
         3000
@@ -311,7 +319,11 @@ function init() {
         function () {
             camera.aspect = window.innerWidth / window.innerHeight;
 
-            camera.fov = 2 * Math.atan(Math.tan(45) / (16/10 * camera.aspect)) * 180 / Math.PI;
+            camera.fov =
+                (2 *
+                    Math.atan(Math.tan(45) / ((16 / 10) * camera.aspect)) *
+                    180) /
+                Math.PI;
             camera.updateProjectionMatrix();
 
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -351,48 +363,18 @@ function init() {
     floor.receiveShadow = true;
     world.add(floor);
 
-    columbusSign = makePainting(
-        { x: 0, y: 60, z: -100 },
-        4,
-        "signs/my-awesome-label.gif",
-        { x: (830 / 95) * 20, y: 20, z: PAINTING_THIN_SIDE_LENGTH },
-        false,
-        true,
-        false
-    );
+    // world
 
-    world.add(columbusSign);
+    let painting;
 
-    /*
-    columbusSign.userData.activated = function() {
-        // FUN CODE GOES HERE
-    }
-
-    console.log(whocares)*/
-
-    let newSign = makePainting(
-        { x: 0, y: 20, z: -200 },
-        4,
-        "paintings/default.png",
-        20,
-        false,
-        true,
-        false
-    );
-
-    world.add(newSign)
-
-    let new2Sign = makePainting(
-        { x: 0, y: 20, z: -300 },
-        4,
-        "signs/my-awesome-label.gif",
-        20,
-        false,
-        true,
-        false
-    );
-
-    world.add(new2Sign)
+    mapData.paintings.forEach(paintingJSON => {
+        painting = makePaintingFromJSON(paintingJSON);
+        world.add(painting);
+        
+        if (paintingJSON.id != "") {
+            uniquePaintings[paintingJSON.id] = painting;
+        }
+    });
 
     scene.add(world);
 }
@@ -400,8 +382,7 @@ function init() {
 function animate() {
     requestAnimationFrame(animate);
 
-    
-    columbusSign.rotation.y += 0.1;
+    uniquePaintings["cbus"].rotation.y += 0.1;
 
     if (controls.enabled === true) {
         controls.update();
@@ -417,9 +398,9 @@ function animate() {
             if (intersects.length > 0) {
                 let intersect = intersects[0];
                 makeParticles(intersect.point);
-                console.log(intersect)
+                console.log(intersect);
                 intersect.object.rotation.y += 0.1;
-                
+
                 if (intersect.object.userData.activated != null) {
                     intersect.object.userData.activated();
                 }
