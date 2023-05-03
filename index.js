@@ -4,41 +4,41 @@ THREE.FirstPersonControls = function (
     speed = 800.0,
     height = 30.0
 ) {
-    var scope = this;
+    let scope = this;
 
     scope.MouseMoveSensitivity = MouseMoveSensitivity;
     scope.speed = speed;
     scope.height = height;
     scope.click = false;
 
-    var moveForward = false;
-    var moveBackward = false;
-    var moveLeft = false;
-    var moveRight = false;
-    var run = false;
+    let moveForward = false;
+    let moveBackward = false;
+    let moveLeft = false;
+    let moveRight = false;
+    let run = false;
 
-    var velocity = new THREE.Vector3();
-    var direction = new THREE.Vector3();
+    let velocity = new THREE.Vector3();
+    let direction = new THREE.Vector3();
 
-    var prevTime = performance.now();
+    let prevTime = performance.now();
 
     camera.rotation.set(0, 0, 0);
 
-    var pitchObject = new THREE.Object3D();
+    let pitchObject = new THREE.Object3D();
     pitchObject.add(camera);
 
-    var yawObject = new THREE.Object3D();
+    let yawObject = new THREE.Object3D();
     yawObject.position.y = 10;
     yawObject.add(pitchObject);
 
-    var PI_2 = Math.PI / 2;
+    let PI_2 = Math.PI / 2;
 
-    var onMouseMove = function (event) {
+    let onMouseMove = function (event) {
         if (scope.enabled === false) return;
 
-        var movementX =
+        let movementX =
             event.movementX || event.mozMovementX || event.webkitMovementX || 0;
-        var movementY =
+        let movementY =
             event.movementY || event.mozMovementY || event.webkitMovementY || 0;
 
         yawObject.rotation.y -= movementX * scope.MouseMoveSensitivity;
@@ -50,7 +50,7 @@ THREE.FirstPersonControls = function (
         );
     };
 
-    var onKeyDown = function (event) {
+    let onKeyDown = function (event) {
         if (scope.enabled === false) return;
 
         switch (event.keyCode) {
@@ -80,7 +80,7 @@ THREE.FirstPersonControls = function (
         }
     }.bind(this);
 
-    var onKeyUp = function (event) {
+    let onKeyUp = function (event) {
         if (scope.enabled === false) return;
 
         switch (event.keyCode) {
@@ -110,12 +110,12 @@ THREE.FirstPersonControls = function (
         }
     }.bind(this);
 
-    var onMouseDownClick = function (event) {
+    let onMouseDownClick = function (event) {
         if (scope.enabled === false) return;
         scope.click = true;
     }.bind(this);
 
-    var onMouseUpClick = function (event) {
+    let onMouseUpClick = function (event) {
         if (scope.enabled === false) return;
         scope.click = false;
     }.bind(this);
@@ -141,8 +141,8 @@ THREE.FirstPersonControls = function (
     };
 
     scope.update = function () {
-        var time = performance.now();
-        var delta = (time - prevTime) / 1000;
+        let time = performance.now();
+        let delta = (time - prevTime) / 1000;
 
         velocity.y -= 9.8 * 100.0 * delta;
         velocity.x -= velocity.x * 10.0 * delta;
@@ -152,7 +152,7 @@ THREE.FirstPersonControls = function (
         direction.x = Number(moveRight) - Number(moveLeft);
         direction.normalize();
 
-        var currentSpeed = scope.speed;
+        let currentSpeed = scope.speed;
         if (run && (moveForward || moveBackward || moveLeft || moveRight))
             currentSpeed = currentSpeed + currentSpeed * 1.1;
 
@@ -174,14 +174,14 @@ THREE.FirstPersonControls = function (
     };
 };
 
-var instructions = document.querySelector("#instructions");
-var havePointerLock =
+let instructions = document.querySelector("#instructions");
+let havePointerLock =
     "pointerLockElement" in document ||
     "mozPointerLockElement" in document ||
     "webkitPointerLockElement" in document;
 if (havePointerLock) {
-    var element = document.body;
-    var pointerlockchange = function (event) {
+    let element = document.body;
+    let pointerlockchange = function (event) {
         if (
             document.pointerLockElement === element ||
             document.mozPointerLockElement === element ||
@@ -194,7 +194,7 @@ if (havePointerLock) {
             instructions.style.display = "-webkit-box";
         }
     };
-    var pointerlockerror = function (event) {
+    let pointerlockerror = function (event) {
         instructions.style.display = "none";
     };
 
@@ -221,7 +221,7 @@ if (havePointerLock) {
                 element.mozRequestPointerLock ||
                 element.webkitRequestPointerLock;
             if (/Firefox/i.test(navigator.userAgent)) {
-                var fullscreenchange = function (event) {
+                let fullscreenchange = function (event) {
                     if (
                         document.fullscreenElement === element ||
                         document.mozFullscreenElement === element ||
@@ -264,7 +264,7 @@ if (havePointerLock) {
     instructions.innerHTML = "Your browser not suported PointerLock";
 }
 
-var camera, scene, renderer, controls, raycaster, arrow, world;
+let camera, scene, renderer, controls, raycaster, arrow, world;
 
 let columbusSign;
 
@@ -319,11 +319,11 @@ function init() {
         false
     );
 
-    var light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
+    let light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
     light.position.set(0, 100, 0.4);
     scene.add(light);
 
-    var dirLight = new THREE.SpotLight(0xffffff, 0.5, 0.0, 180.0);
+    let dirLight = new THREE.SpotLight(0xffffff, 0.5, 0.0, 180.0);
     dirLight.color.setHSL(0.1, 1, 0.95);
     dirLight.position.set(0, 300, 100);
     dirLight.castShadow = true;
@@ -334,7 +334,7 @@ function init() {
     dirLight.shadow.mapSize.height = 4096;
     dirLight.shadow.camera.far = 3000;
 
-    //var dirLightHeper = new THREE.SpotLightHelper( dirLight, 10 );
+    //let dirLightHeper = new THREE.SpotLightHelper( dirLight, 10 );
     //scene.add( dirLightHeper );
 
     controls = new THREE.FirstPersonControls(camera);
@@ -342,11 +342,11 @@ function init() {
 
     // floor
 
-    var floorGeometry = new THREE.PlaneBufferGeometry(2000, 2000, 100, 100);
-    var floorMaterial = new THREE.MeshLambertMaterial();
+    let floorGeometry = new THREE.PlaneBufferGeometry(2000, 2000, 100, 100);
+    let floorMaterial = new THREE.MeshLambertMaterial();
     floorMaterial.color.setHSL(0.095, 1, 0.75);
 
-    var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    let floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.rotation.x = -Math.PI / 2;
     floor.receiveShadow = true;
     world.add(floor);
@@ -412,10 +412,10 @@ function animate() {
         );
 
         if (controls.click === true) {
-            var intersects = raycaster.intersectObjects(world.children);
+            let intersects = raycaster.intersectObjects(world.children);
 
             if (intersects.length > 0) {
-                var intersect = intersects[0];
+                let intersect = intersects[0];
                 makeParticles(intersect.point);
                 console.log(intersect)
                 intersect.object.rotation.y += 0.1;
@@ -427,7 +427,7 @@ function animate() {
         }
 
         if (particles.length > 0) {
-            var pLength = particles.length;
+            let pLength = particles.length;
             while (pLength--) {
                 particles[pLength].prototype.update(pLength);
             }
@@ -437,26 +437,26 @@ function animate() {
     renderer.render(scene, camera);
 }
 
-var particles = new Array();
+let particles = new Array();
 
 function makeParticles(intersectPosition) {
-    var totalParticles = 80;
+    let totalParticles = 80;
 
-    var pointsGeometry = new THREE.Geometry();
+    let pointsGeometry = new THREE.Geometry();
     pointsGeometry.oldvertices = [];
-    var colors = [];
-    for (var i = 0; i < totalParticles; i++) {
-        var position = randomPosition(Math.random());
-        var vertex = new THREE.Vector3(position[0], position[1], position[2]);
+    let colors = [];
+    for (let i = 0; i < totalParticles; i++) {
+        let position = randomPosition(Math.random());
+        let vertex = new THREE.Vector3(position[0], position[1], position[2]);
         pointsGeometry.oldvertices.push([0, 0, 0]);
         pointsGeometry.vertices.push(vertex);
 
-        var color = new THREE.Color(Math.random() * 0xffffff);
+        let color = new THREE.Color(Math.random() * 0xffffff);
         colors.push(color);
     }
     pointsGeometry.colors = colors;
 
-    var pointsMaterial = new THREE.PointsMaterial({
+    let pointsMaterial = new THREE.PointsMaterial({
         size: 0.8,
         sizeAttenuation: true,
         depthWrite: true,
@@ -465,7 +465,7 @@ function makeParticles(intersectPosition) {
         vertexColors: THREE.VertexColors,
     });
 
-    var points = new THREE.Points(pointsGeometry, pointsMaterial);
+    let points = new THREE.Points(pointsGeometry, pointsMaterial);
 
     points.prototype = Object.create(THREE.Points.prototype);
     points.position.x = intersectPosition.x;
@@ -476,21 +476,21 @@ function makeParticles(intersectPosition) {
 
     points.prototype.constructor = points;
     points.prototype.update = function (index) {
-        var pCount = this.constructor.geometry.vertices.length;
-        var positionYSum = 0;
+        let pCount = this.constructor.geometry.vertices.length;
+        let positionYSum = 0;
         while (pCount--) {
-            var position = this.constructor.geometry.vertices[pCount];
-            var oldPosition = this.constructor.geometry.oldvertices[pCount];
+            let position = this.constructor.geometry.vertices[pCount];
+            let oldPosition = this.constructor.geometry.oldvertices[pCount];
 
-            var velocity = {
+            let velocity = {
                 x: position.x - oldPosition[0],
                 y: position.y - oldPosition[1],
                 z: position.z - oldPosition[2],
             };
 
-            var oldPositionX = position.x;
-            var oldPositionY = position.y;
-            var oldPositionZ = position.z;
+            let oldPositionX = position.x;
+            let oldPositionY = position.y;
+            let oldPositionZ = position.z;
 
             position.y -= 0.03; // gravity
 
@@ -498,7 +498,7 @@ function makeParticles(intersectPosition) {
             position.y += velocity.y;
             position.z += velocity.z;
 
-            var wordlPosition = this.constructor.position.y + position.y;
+            let wordlPosition = this.constructor.position.y + position.y;
 
             if (wordlPosition <= 0) {
                 //particle touched the ground
@@ -529,30 +529,30 @@ function makeParticles(intersectPosition) {
 
 function randomPosition(radius) {
     radius = radius * Math.random();
-    var theta = Math.random() * 2.0 * Math.PI;
-    var phi = Math.random() * Math.PI;
+    let theta = Math.random() * 2.0 * Math.PI;
+    let phi = Math.random() * Math.PI;
 
-    var sinTheta = Math.sin(theta);
-    var cosTheta = Math.cos(theta);
-    var sinPhi = Math.sin(phi);
-    var cosPhi = Math.cos(phi);
-    var x = radius * sinPhi * cosTheta;
-    var y = radius * sinPhi * sinTheta;
-    var z = radius * cosPhi;
+    let sinTheta = Math.sin(theta);
+    let cosTheta = Math.cos(theta);
+    let sinPhi = Math.sin(phi);
+    let cosPhi = Math.cos(phi);
+    let x = radius * sinPhi * cosTheta;
+    let y = radius * sinPhi * sinTheta;
+    let z = radius * cosPhi;
 
     return [x, y, z];
 }
 
-var Controlers = function () {
+let Controlers = function () {
     this.MouseMoveSensitivity = 0.002;
     this.speed = 800.0;
     this.height = 30.0;
 };
 
 window.onload = function () {
-    var controler = new Controlers();
+    let controler = new Controlers();
     /*
-    var gui = new dat.GUI();
+    let gui = new dat.GUI();
     gui.add(controler, "MouseMoveSensitivity", 0, 1)
         .step(0.001)
         .name("Mouse Sensitivity")
