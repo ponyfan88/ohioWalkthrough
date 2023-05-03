@@ -1,23 +1,23 @@
 {
     "paintings" : [
         {
-            "id": "",
-            "pos": { "x": 0, "y": 20, "z": -300 },
+            "id": "cbus",
+            "pos": { "x": 0, "y": 60, "z": -300 },
             "side": 4,
             "texture": "signs/my-awesome-label.gif",
-            "size": 20,
+            "size": { "x": "174.736842", "y": 20, "z": 0.1 },
             "transparent": false,
             "pixelated": true,
             "doublesided": false
         },
         {
-            "id": "cbus",
+            "id": "",
             "pos": { "x": 0, "y": 20, "z": -300 },
             "side": 4,
-            "texture": "signs/my-awesome-label.gif",
+            "texture": "paintings/default.png",
             "size": 20,
             "transparent": false,
-            "pixelated": true,
+            "pixelated": false,
             "doublesided": false
         }
     ]
