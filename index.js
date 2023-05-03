@@ -270,6 +270,8 @@ let camera, scene, renderer, controls, raycaster, arrow, world;
 
 let uniquePaintings = {};
 
+let rotatingSigns = []; // signs to rotate constantly
+
 init();
 animate();
 
@@ -376,6 +378,10 @@ function init() {
         if (paintingJSON.id != "") {
             uniquePaintings[paintingJSON.id] = painting;
         }
+
+        if (paintingJSON.type == "rotating-sign") {
+            rotatingSigns.push(painting)
+        }
     });
 
     scene.add(world);
@@ -384,7 +390,9 @@ function init() {
 function animate() {
     requestAnimationFrame(animate);
 
-    uniquePaintings["cbus"].rotation.y += 0.1;
+    rotatingSigns.forEach(element => {
+        element.rotation.y += element.userData.data.rotationAmount
+    });
 
     if (controls.enabled === true) {
         controls.update();
