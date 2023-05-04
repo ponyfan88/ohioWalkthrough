@@ -279,6 +279,9 @@ let controls
 let raycaster
 let world;
 
+let cameraPos;
+let cameraDirection;
+
 let uniquePaintings = {};
 
 let rotatingSigns = []; // signs to rotate constantly
@@ -429,7 +432,8 @@ function animate() {
         element.rotation.y += element.userData.data.rotationAmount;
     });
 
-    let cameraPos = camera.getWorldPosition(new THREE.Vector3())
+    cameraPos = camera.getWorldPosition(new THREE.Vector3())
+    cameraDirection = camera.getWorldDirection(new THREE.Vector3())
 
     if (controls.enabled) {
         crosshair.classList = "enabled"
@@ -437,7 +441,7 @@ function animate() {
 
         raycaster.set(
             cameraPos,
-            camera.getWorldDirection(new THREE.Vector3())
+            cameraDirection
         );
 
         let intersects = raycaster.intersectObjects(world.children);
@@ -468,8 +472,10 @@ function animate() {
     }
 
     playerMesh.position.x = cameraPos.x;
-    playerMesh.position.y = cameraPos.y;
     playerMesh.position.z = cameraPos.z;
+
+    // face the same. math stuff.
+    playerMesh.rotation.y = Math.atan2(cameraDirection.x,cameraDirection.z);
 
     tempMesh.userData.obb.copy(tempMesh.geometry.userData.obb);
     playerMesh.userData.obb.copy(playerMesh.geometry.userData.obb);
@@ -599,7 +605,7 @@ let Controlers = function () {
 };
 
 window.onload = function () {
-    let controler = new Controlers();
+    //let controler = new Controlers();
     /*
     let gui = new dat.GUI();
     gui.add(controler, "MouseMoveSensitivity", 0, 1)
