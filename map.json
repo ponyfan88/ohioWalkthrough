@@ -11,7 +11,7 @@
             "doublesided": true,
             "type": "rotating-sign",
             "data": {
-                "rotationAmount": 1
+                "rotationAmount": 0.01
             }
         },
         {
