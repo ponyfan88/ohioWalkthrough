@@ -302,12 +302,13 @@ let playerGeometry = new THREE.BoxGeometry(1,1,1);
 playerGeometry.computeBoundingBox();
 const playerMesh = new THREE.Mesh(
     playerGeometry,
-    new THREE.MeshBasicMaterial(),
+    new THREE.MeshBasicMaterial({color: 0xff0000}),
 );
 
 playerMesh.geometry.userData = {};
 playerMesh.geometry.userData.obb = new OBB().fromBox3(playerMesh.geometry.boundingBox);
 playerMesh.userData.obb = new OBB();
+playerMesh.matrixAutoUpdate = true;
 
 init();
 animate();
@@ -428,12 +429,14 @@ function animate() {
         element.rotation.y += element.userData.data.rotationAmount;
     });
 
+    let cameraPos = camera.getWorldPosition(new THREE.Vector3())
+
     if (controls.enabled) {
         crosshair.classList = "enabled"
         controls.update();
 
         raycaster.set(
-            camera.getWorldPosition(new THREE.Vector3()),
+            cameraPos,
             camera.getWorldDirection(new THREE.Vector3())
         );
 
@@ -464,12 +467,12 @@ function animate() {
         crosshair.classList = ""
     }
 
-    playerMesh.position.x = camera.position.x;
-    playerMesh.position.y = camera.position.y;
-    playerMesh.position.z = camera.position.z;
+    playerMesh.position.x = cameraPos.x;
+    playerMesh.position.y = cameraPos.y;
+    playerMesh.position.z = cameraPos.z;
 
-    /* tempMesh.userData.obb.copy(tempMesh.geometry.userData.obb);
-    playerMesh.userData.obb.copy(playerMesh.geometry.userData.obb); */
+    tempMesh.userData.obb.copy(tempMesh.geometry.userData.obb);
+    playerMesh.userData.obb.copy(playerMesh.geometry.userData.obb);
     tempMesh.userData.obb.applyMatrix4(tempMesh.matrixWorld);
     playerMesh.userData.obb.applyMatrix4(playerMesh.matrixWorld);
     if (playerMesh.userData.obb.intersectsOBB(tempMesh.userData.obb)) {
