@@ -1,6 +1,8 @@
 import mapData from "./map.json" assert { type: "json" };
+import * as THREE from 'three';
+import  * as PAINT from 'painting';
 
-THREE.FirstPersonControls = function (
+let firstPersonControls = function (
     camera,
     MouseMoveSensitivity = 0.002,
     speed = 800.0,
@@ -353,12 +355,12 @@ function init() {
     //let dirLightHeper = new THREE.SpotLightHelper( dirLight, 10 );
     //scene.add( dirLightHeper );
 
-    controls = new THREE.FirstPersonControls(camera);
+    controls = new firstPersonControls(camera);
     scene.add(controls.getObject());
 
     // floor
 
-    let floorGeometry = new THREE.PlaneBufferGeometry(2000, 2000, 100, 100);
+    let floorGeometry = new THREE.PlaneGeometry(2000, 2000, 100, 100);
     let floorMaterial = new THREE.MeshLambertMaterial();
     floorMaterial.color.setHSL(0.095, 1, 0.75);
 
@@ -372,7 +374,7 @@ function init() {
     let painting;
 
     mapData.paintings.forEach((paintingJSON) => {
-        painting = makePaintingFromJSON(paintingJSON);
+        painting = PAINT.makePaintingFromJSON(paintingJSON);
         painting.userData.type = paintingJSON.type;
         painting.userData.data = paintingJSON.data;
         world.add(painting);
@@ -409,21 +411,15 @@ function animate() {
 
         if (intersects.length > 0) {
             let intersect = intersects[0];
-            if (controls.click) {
-                makeParticles(intersect.point);
-            }
-            //console.log(intersect);
 
             if (intersect.object.userData.type == "painting-clickable") {
                 description.innerText = intersect.object.userData.data.description
                 description.classList = "enabled"
             }
             else {
-                //description.innerText = ""
                 description.classList = ""
             }
         } else {
-            //description.innerText = ""
             description.classList = ""
         }
 
@@ -442,11 +438,11 @@ function animate() {
 }
 
 let particles = new Array();
-
+/*
 function makeParticles(intersectPosition) {
     let totalParticles = 80;
 
-    let pointsGeometry = new THREE.Geometry();
+    let pointsGeometry = new THREE.BufferGeometry();
     pointsGeometry.oldvertices = [];
     let colors = [];
     for (let i = 0; i < totalParticles; i++) {
@@ -545,7 +541,7 @@ function randomPosition(radius) {
     let z = radius * cosPhi;
 
     return [x, y, z];
-}
+}*/
 
 let Controlers = function () {
     this.MouseMoveSensitivity = 0.002;

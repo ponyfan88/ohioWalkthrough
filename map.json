@@ -1,7 +1,7 @@
 {
     "paintings": [
         {
-            "id": "cbus",
+            "id": "",
             "pos": { "x": 0, "y": 60, "z": -100 },
             "side": 4,
             "texture": "signs/my-awesome-label.png",
@@ -11,7 +11,7 @@
             "doublesided": true,
             "type": "rotating-sign",
             "data": {
-                "rotationAmount": 0.01
+                "rotationAmount": 1
             }
         },
         {
@@ -97,6 +97,22 @@
             "data": {
                 "description": "this is a pretty epic test"
             }
+        }
+    ],
+    "blocks": [
+        {
+            "id": "",
+            "pos": { "x": -30, "y": 30, "z": -100 },
+            "size": { "x": "87.368421", "y": 10, "z": 0.1 },
+            "collisions": true
+        }
+    ],
+    "planes": [
+        {
+            "id": "",
+            "pos": { "x": -30, "y": 0, "z": -100 },
+            "size": { "x": "87.368421", "y": 10},
+            "collisions": true
         }
     ]
 }
