@@ -318,7 +318,7 @@ function init() {
     renderer.shadowMap.enabled = true;
     document.body.appendChild(renderer.domElement);
     renderer.domElement.id = "canvasse";
-    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
 
     window.addEventListener(
         "resize",
