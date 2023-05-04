@@ -1,4 +1,5 @@
 import mapData from "./map.json" assert { type: "json" };
+import { OBB } from 'three/addons/math/OBB.js';
 
 THREE.FirstPersonControls = function (
     camera,
@@ -280,6 +281,32 @@ let uniquePaintings = {};
 
 let rotatingSigns = []; // signs to rotate constantly
 
+let geometry = new THREE.BoxGeometry(50,50,50)
+geometry.computeBoundingBox();
+
+const tempMesh = new THREE.Mesh(
+    geometry,
+    new THREE.MeshBasicMaterial({color: 0x00FFFF}),
+);
+
+tempMesh.translateX(50);
+tempMesh.translateY(50);
+tempMesh.geometry.userData = {}
+tempMesh.geometry.userData.obb = new OBB().fromBox3(tempMesh.geometry.boundingBox)
+tempMesh.userData.obb = new OBB();
+
+    
+let playerGeometry = new THREE.BoxGeometry(1,1,1);
+playerGeometry.computeBoundingBox();
+const playerMesh = new THREE.Mesh(
+    playerGeometry,
+    new THREE.MeshBasicMaterial(),
+);
+
+playerMesh.geometry.userData = {};
+playerMesh.geometry.userData.obb = new OBB().fromBox3(playerMesh.geometry.boundingBox);
+playerMesh.userData.obb = new OBB();
+
 init();
 animate();
 
@@ -386,6 +413,9 @@ function init() {
         }
     });
 
+    world.add(tempMesh);
+    world.add(playerMesh);
+    
     scene.add(world);
 }
 
@@ -436,6 +466,22 @@ function animate() {
     }
     else {
         crosshair.classList = ""
+    }
+
+    playerMesh.position.x = camera.position.x;
+    playerMesh.position.y = camera.position.y;
+    playerMesh.position.z = camera.position.z;
+
+    /* tempMesh.userData.obb.copy(tempMesh.geometry.userData.obb);
+    playerMesh.userData.obb.copy(playerMesh.geometry.userData.obb); */
+    tempMesh.userData.obb.applyMatrix4(tempMesh.matrixWorld);
+    playerMesh.userData.obb.applyMatrix4(playerMesh.matrixWorld);
+    if (playerMesh.userData.obb.intersectsOBB(tempMesh.userData.obb)) {
+        tempMesh.material.color.set(0xff0000);
+        console.log("Collision Detected");
+    }else{
+        tempMesh.material.color.set(0x00ffff);
+        console.log("No Collision Detected")
     }
 
     renderer.render(scene, camera);
