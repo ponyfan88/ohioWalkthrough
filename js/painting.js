@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 const PAINTING_THIN_SIDE_LENGTH = 0.1;
 
 const blankMaterial = new THREE.MeshStandardMaterial({
@@ -120,7 +122,7 @@ new THREE.MeshBasicMaterial({ map: loader.load('images/m.png')}), //back side
 
 
 // same thing but to load from map.json
-let makePaintingFromJSON = function (json) {
+export let makePaintingFromJSON = function (json) {
     let sideTextures = [...blankPaintingSideTextures];
 
     if (json.transparent) {

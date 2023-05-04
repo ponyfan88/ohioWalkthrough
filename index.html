@@ -24,19 +24,18 @@
 
         <div id="crosshair" class=""></div>
 
-        <script src="./js/libraries/threejs/three.min.js"></script>
+        <!--<script src="./js/libraries/threejs/three.min.js"></script>-->
 
         <script type="importmap">
             {
                 "imports": {
                     "three": "./js/libraries/threejs/three.module.js",
-                    "three/addons/": "./js/libraries/threejs/jsm/"
+                    "three/addons/": "./js/libraries/threejs/jsm/",
+                    "painting": "./js/painting.js"
                 }
             }
         </script>
         <!-- START LOAD BASED SINGLE FUNCTION FILES -->
-
-        <script src="./js/painting.js"></script>
 
         <!-- END LOAD BASED SINGLE FUNCTION FILES -->
         <script src="index.js" type="module"></script>
