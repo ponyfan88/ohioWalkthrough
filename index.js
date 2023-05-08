@@ -509,6 +509,20 @@ function animate() {
                 wallMesh.material.color.set(0xff0000);
             }
             //console.log(playerMesh.userData.obb);
+
+            let playerPos = playerMesh.getWorldPosition(new THREE.Vector3());
+            let playerDirection = playerMesh.getWorldDirection(new THREE.Vector3());
+
+            raycaster.set(playerPos, playerDirection);
+
+            let intersects = raycaster.intersectObjects(wallMesh);
+
+            console.log(intersects)
+
+            if (intersects.length > 0) {
+                console.log(intersects[0]);
+            }
+
         } else {
             if (DEBUG) {
                 wallMesh.material.color.set(0x00ffff);
