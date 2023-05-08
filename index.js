@@ -3,6 +3,7 @@ import { OBB } from "three/addons/math/OBB.js";
 import * as THREE from "three";
 import * as PAINT from "painting";
 
+// copy and pasted early version of firstpersoncontrols. works well enough. might be changed later.
 let firstPersonControls = function (
     camera,
     MouseMoveSensitivity = 0.002,
@@ -179,95 +180,10 @@ let firstPersonControls = function (
     };
 };
 
+const CAMERA_FOV = 75;
+const DEBUG = true; // show walls, color floors, etc.
+
 let instructions = document.querySelector("#instructions");
-let havePointerLock =
-    "pointerLockElement" in document ||
-    "mozPointerLockElement" in document ||
-    "webkitPointerLockElement" in document;
-if (havePointerLock) {
-    let element = document.body;
-    let pointerlockchange = function (event) {
-        if (
-            document.pointerLockElement === element ||
-            document.mozPointerLockElement === element ||
-            document.webkitPointerLockElement === element
-        ) {
-            controls.enabled = true;
-            instructions.style.display = "none";
-        } else {
-            controls.enabled = false;
-            instructions.style.display = "-webkit-box";
-        }
-    };
-    let pointerlockerror = function (event) {
-        instructions.style.display = "none";
-    };
-
-    document.addEventListener("pointerlockchange", pointerlockchange, false);
-    document.addEventListener("mozpointerlockchange", pointerlockchange, false);
-    document.addEventListener(
-        "webkitpointerlockchange",
-        pointerlockchange,
-        false
-    );
-    document.addEventListener("pointerlockerror", pointerlockerror, false);
-    document.addEventListener("mozpointerlockerror", pointerlockerror, false);
-    document.addEventListener(
-        "webkitpointerlockerror",
-        pointerlockerror,
-        false
-    );
-
-    instructions.addEventListener(
-        "click",
-        function (event) {
-            element.requestPointerLock =
-                element.requestPointerLock ||
-                element.mozRequestPointerLock ||
-                element.webkitRequestPointerLock;
-            if (/Firefox/i.test(navigator.userAgent)) {
-                let fullscreenchange = function (event) {
-                    if (
-                        document.fullscreenElement === element ||
-                        document.mozFullscreenElement === element ||
-                        document.mozFullScreenElement === element
-                    ) {
-                        document.removeEventListener(
-                            "fullscreenchange",
-                            fullscreenchange
-                        );
-                        document.removeEventListener(
-                            "mozfullscreenchange",
-                            fullscreenchange
-                        );
-                        element.requestPointerLock();
-                    }
-                };
-                document.addEventListener(
-                    "fullscreenchange",
-                    fullscreenchange,
-                    false
-                );
-                document.addEventListener(
-                    "mozfullscreenchange",
-                    fullscreenchange,
-                    false
-                );
-                element.requestFullscreen =
-                    element.requestFullscreen ||
-                    element.mozRequestFullscreen ||
-                    element.mozRequestFullScreen ||
-                    element.webkitRequestFullscreen;
-                element.requestFullscreen();
-            } else {
-                element.requestPointerLock();
-            }
-        },
-        false
-    );
-} else {
-    instructions.innerHTML = "Your browser not suported PointerLock";
-}
 
 let description = document.getElementById("description");
 let crosshair = document.getElementById("crosshair");
@@ -289,8 +205,6 @@ let uniquePaintings = {};
 let rotatingSigns = []; // signs to rotate constantly
 
 let audioPlayer = new Audio("assets/audio/music.mp3");
-
-const DEBUG = false;
 
 /*
 tempMesh.translateX(50);
@@ -319,17 +233,13 @@ animate();
 
 function init() {
     camera = new THREE.PerspectiveCamera(
-        (2 *
-            Math.atan(
-                Math.tan(45) /
-                    (((16 / 10) * window.innerWidth) / window.innerHeight)
-            ) *
-            180) /
-            Math.PI,
+        convertFov(CAMERA_FOV, window.innerWidth, window.innerHeight),
         window.innerWidth / window.innerHeight,
-        1,
+        0.1,
         3000
     );
+
+    console.log(camera.fov);
 
     world = new THREE.Group();
 
@@ -357,11 +267,7 @@ function init() {
         function () {
             camera.aspect = window.innerWidth / window.innerHeight;
 
-            camera.fov =
-                (2 *
-                    Math.atan(Math.tan(45) / ((16 / 10) * camera.aspect)) *
-                    180) /
-                Math.PI;
+            camera.fov = convertFov(CAMERA_FOV, window.innerWidth, window.innerHeight);
             camera.updateProjectionMatrix();
 
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -388,31 +294,98 @@ function init() {
     //scene.add( dirLightHeper );
 
     controls = new firstPersonControls(camera);
+
+    // pointer lock object forking for cross browser
+    document.body.requestPointerLock =
+        document.body.requestPointerLock || document.body.mozRequestPointerLock;
+    document.exitPointerLock =
+        document.exitPointerLock || document.mozExitPointerLock;
+
+    // when we click request the pointer lock
+    document.body.onclick = function () {
+        document.body.requestPointerLock();
+    };
+
+    // pointer lock event listeners
+    // Hook pointer lock state change events for different browsers
+    document.addEventListener("pointerlockchange", pointerLockChanged, false); //<-- when requested, we need to run the lockchangealert script
+    document.addEventListener(
+        "mozpointerlockchange",
+        pointerLockChanged,
+        false
+    );
+
+    function pointerLockChanged() {
+        if (
+            document.pointerLockElement === document.body ||
+            document.mozPointerLockElement === document.body
+        ) {
+            controls.enabled = true;
+            instructions.style.display = "none";
+
+            console.log("The pointer lock status is now locked");
+        } else {
+            controls.enabled = false;
+            instructions.style.display = "-webkit-box";
+
+            console.log("The pointer lock status is now unlocked");
+        }
+    }
+
+    controls.enabled = false;
+    instructions.style.display = "-webkit-box";
+
     scene.add(controls.getObject());
 
     // floor
 
+    // instantialize loop variables
     let floorGeometry;
     let floorMaterial;
     let floor;
 
+    // for every plane in the planes section of map.json
     mapData.planes.forEach((planeJSON) => {
-        floorGeometry = new THREE.PlaneGeometry(planeJSON.plane[0], planeJSON.plane[1], planeJSON.plane[2], planeJSON.plane[3]);
-        //floorMaterial.color.setHSL(0.095, 1, 0.75);
-        
+        // plane geometry is formed with 4 numbers
+        floorGeometry = new THREE.PlaneGeometry(
+            planeJSON.plane[0],
+            planeJSON.plane[1],
+            planeJSON.plane[2],
+            planeJSON.plane[3]
+        );
+
+        // give every floor plane a basic material
         floorMaterial = new THREE.MeshLambertMaterial();
-    
+
+        // if we are in debug mode give floors a more visible color
+        if (DEBUG) {
+            floorMaterial.color.setHSL(0.095, 1, 0.75);
+        }
+
+        // the floor
         floor = new THREE.Mesh(floorGeometry, floorMaterial);
+
+        // shadows should be cast onto this surface
         floor.receiveShadow = true;
+
+        // flip it so that if faces down
         floor.rotation.x = -Math.PI / 2;
 
+        floor.position.x = planeJSON.pos.x;
+        floor.position.y = planeJSON.pos.y;
+        floor.position.z = planeJSON.pos.z;
+
         world.add(floor);
-    })
+    });
 
     // world
 
+    // paintings/signs
+
+    // instantialize loop variables
     let painting;
 
+    // for every painting in the paintings section of map.json
     mapData.paintings.forEach((paintingJSON) => {
         painting = PAINT.makePaintingFromJSON(paintingJSON);
         painting.userData.type = paintingJSON.type;
@@ -428,8 +401,6 @@ function init() {
         }
     });
 
-    world.add(playerMesh);
-
     let wallMesh;
     let wallGeometry;
 
@@ -442,6 +413,7 @@ function init() {
 
         wallGeometry.computeBoundingBox();
 
+        // if using debug, give it a specific color
         if (DEBUG) {
             wallMesh = new THREE.Mesh(
                 wallGeometry,
@@ -450,6 +422,11 @@ function init() {
         } else {
             wallMesh = new THREE.Mesh(wallGeometry);
         }
+
+        // move the mesh into the corrent position, otherwise it will be at (0,0,0)
+        wallMesh.position.x = wallJSON.pos.x;
+        wallMesh.position.y = wallJSON.pos.y;
+        wallMesh.position.z = wallJSON.pos.z;
 
         wallMesh.geometry.userData = {};
         wallMesh.geometry.userData.obb = new OBB().fromBox3(
@@ -460,6 +437,9 @@ function init() {
         wallMeshes.push(wallMesh);
 
         world.add(wallMesh);
+
+        wallMesh.userData.obb.copy(wallMesh.geometry.userData.obb);
+        wallMesh.userData.obb.applyMatrix4(wallMesh.matrixWorld);
     });
 
     //source for all audio: https://www.youtube.com/playlist?list=PLH88srMwnAUXRdIIk6tJPgSgwG4B5gvC9
@@ -467,6 +447,8 @@ function init() {
     audioPlayer.volume = 0;
     audioPlayer.play();
     console.log("Audio Player Created")
+
+    world.add(playerMesh)
 
     scene.add(world);
 }
@@ -504,13 +486,6 @@ function animate() {
         } else {
             description.classList = "";
         }
-
-        /*if (particles.length > 0) {
-            let pLength = particles.length;
-            while (pLength--) {
-                particles[pLength].prototype.update(pLength);
-            }
-        }*/
     } else {
         crosshair.classList = "";
         audioPlayer.volume = 0;
@@ -525,156 +500,32 @@ function animate() {
     playerMesh.userData.obb.copy(playerMesh.geometry.userData.obb);
     playerMesh.userData.obb.applyMatrix4(playerMesh.matrixWorld);
 
-    //tempMesh.userData.obb.applyMatrix4(tempMesh.matrixWorld);
-
     wallMeshes.forEach((wallMesh) => {
         wallMesh.userData.obb.copy(wallMesh.geometry.userData.obb);
+        wallMesh.userData.obb.applyMatrix4(wallMesh.matrixWorld); // TODO: find a solution without this
 
         if (playerMesh.userData.obb.intersectsOBB(wallMesh.userData.obb)) {
-            //wallMesh.material.color.set(0xff0000);
-            console.log(playerMesh.userData.obb);
+            if (DEBUG) {
+                wallMesh.material.color.set(0xff0000);
+            }
+            //console.log(playerMesh.userData.obb);
         } else {
-            //wallMesh.material.color.set(0x00ffff);
+            if (DEBUG) {
+                wallMesh.material.color.set(0x00ffff);
+            }
         }
     });
 
     renderer.render(scene, camera);
 }
 
-let particles = new Array();
-/*
-function makeParticles(intersectPosition) {
-    let totalParticles = 80;
-
-    let pointsGeometry = new THREE.BufferGeometry();
-    pointsGeometry.oldvertices = [];
-    let colors = [];
-    for (let i = 0; i < totalParticles; i++) {
-        let position = randomPosition(Math.random());
-        let vertex = new THREE.Vector3(position[0], position[1], position[2]);
-        pointsGeometry.oldvertices.push([0, 0, 0]);
-        pointsGeometry.vertices.push(vertex);
-
-        let color = new THREE.Color(Math.random() * 0xffffff);
-        colors.push(color);
-    }
-    pointsGeometry.colors = colors;
-
-    let pointsMaterial = new THREE.PointsMaterial({
-        size: 0.8,
-        sizeAttenuation: true,
-        depthWrite: true,
-        blending: THREE.AdditiveBlending,
-        transparent: true,
-        vertexColors: THREE.VertexColors,
-    });
-
-    let points = new THREE.Points(pointsGeometry, pointsMaterial);
-
-    points.prototype = Object.create(THREE.Points.prototype);
-    points.position.x = intersectPosition.x;
-    points.position.y = intersectPosition.y;
-    points.position.z = intersectPosition.z;
-    points.updateMatrix();
-    points.matrixAutoUpdate = false;
-
-    points.prototype.constructor = points;
-    points.prototype.update = function (index) {
-        let pCount = this.constructor.geometry.vertices.length;
-        let positionYSum = 0;
-        while (pCount--) {
-            let position = this.constructor.geometry.vertices[pCount];
-            let oldPosition = this.constructor.geometry.oldvertices[pCount];
-
-            let velocity = {
-                x: position.x - oldPosition[0],
-                y: position.y - oldPosition[1],
-                z: position.z - oldPosition[2],
-            };
-
-            let oldPositionX = position.x;
-            let oldPositionY = position.y;
-            let oldPositionZ = position.z;
-
-            position.y -= 0.03; // gravity
-
-            position.x += velocity.x;
-            position.y += velocity.y;
-            position.z += velocity.z;
-
-            let wordlPosition = this.constructor.position.y + position.y;
-
-            if (wordlPosition <= 0) {
-                //particle touched the ground
-                oldPositionY = position.y;
-                position.y = oldPositionY - velocity.y * 0.3;
-
-                positionYSum += 1;
-            }
-
-            this.constructor.geometry.oldvertices[pCount] = [
-                oldPositionX,
-                oldPositionY,
-                oldPositionZ,
-            ];
-        }
-
-        pointsGeometry.verticesNeedUpdate = true;
-
-        if (positionYSum >= totalParticles) {
-            particles.splice(index, 1);
-            scene.remove(this.constructor);
-            console.log("particle removed");
-        }
-    };
-    particles.push(points);
-    scene.add(points);
+function convertFov(fov, vw, vh) {
+    const DEVELOPER_SCREEN_ASPECT_RATIO_HEIGHT = 10;
+    const DEVELOPER_SCREEN_ASPECT_RATIO_WIDTH = 16;
+    
+    return (
+        (Math.atan(Math.tan((fov * Math.PI) / 360) / ((DEVELOPER_SCREEN_ASPECT_RATIO_HEIGHT / DEVELOPER_SCREEN_ASPECT_RATIO_WIDTH) * (vw / vh))) *
+            360) /
+        Math.PI
+    );
 }
-
-function randomPosition(radius) {
-    radius = radius * Math.random();
-    let theta = Math.random() * 2.0 * Math.PI;
-    let phi = Math.random() * Math.PI;
-
-    let sinTheta = Math.sin(theta);
-    let cosTheta = Math.cos(theta);
-    let sinPhi = Math.sin(phi);
-    let cosPhi = Math.cos(phi);
-    let x = radius * sinPhi * cosTheta;
-    let y = radius * sinPhi * sinTheta;
-    let z = radius * cosPhi;
-
-    return [x, y, z];
-}*/
-
-let Controlers = function () {
-    this.MouseMoveSensitivity = 0.002;
-    this.speed = 800.0;
-    this.height = 30.0;
-};
-
-window.onload = function () {
-    //let controler = new Controlers();
-    /*
-    let gui = new dat.GUI();
-    gui.add(controler, "MouseMoveSensitivity", 0, 1)
-        .step(0.001)
-        .name("Mouse Sensitivity")
-        .onChange(function (value) {
-            controls.MouseMoveSensitivity = value;
-        });
-    gui.add(controler, "speed", 1, 8000)
-        .step(1)
-        .name("Speed")
-        .onChange(function (value) {
-            controls.speed = value;
-        });
-    gui.add(controler, "height", 1, 3000)
-        .step(1)
-        .name("Play Height")
-        .onChange(function (value) {
-            controls.height = value;
-            camera.updateProjectionMatrix();
-        });
-    */
-};
