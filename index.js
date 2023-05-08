@@ -396,9 +396,9 @@ function init() {
 
     mapData.planes.forEach((planeJSON) => {
         floorGeometry = new THREE.PlaneGeometry(planeJSON.plane[0], planeJSON.plane[1], planeJSON.plane[2], planeJSON.plane[3]);
-        //floorMaterial.color.setHSL(0.095, 1, 0.75);
         
         floorMaterial = new THREE.MeshLambertMaterial();
+        //floorMaterial.color.setHSL(0.095, 1, 0.75);
     
         floor = new THREE.Mesh(floorGeometry, floorMaterial);
         floor.receiveShadow = true;
