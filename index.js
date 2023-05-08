@@ -288,7 +288,7 @@ let uniquePaintings = {};
 
 let rotatingSigns = []; // signs to rotate constantly
 
-const DEBUG = false;
+const DEBUG = true;
 
 /*
 tempMesh.translateX(50);
@@ -395,17 +395,26 @@ function init() {
     let floor;
 
     mapData.planes.forEach((planeJSON) => {
-        floorGeometry = new THREE.PlaneGeometry(planeJSON.plane[0], planeJSON.plane[1], planeJSON.plane[2], planeJSON.plane[3]);
-        
+        floorGeometry = new THREE.PlaneGeometry(
+            planeJSON.plane[0],
+            planeJSON.plane[1],
+            planeJSON.plane[2],
+            planeJSON.plane[3]
+        );
+
         floorMaterial = new THREE.MeshLambertMaterial();
         //floorMaterial.color.setHSL(0.095, 1, 0.75);
-    
+
         floor = new THREE.Mesh(floorGeometry, floorMaterial);
         floor.receiveShadow = true;
         floor.rotation.x = -Math.PI / 2;
 
+        floor.position.x = planeJSON.pos.x;
+        floor.position.y = planeJSON.pos.y;
+        floor.position.z = planeJSON.pos.z;
+
         world.add(floor);
-    })
+    });
 
     // world
 
@@ -440,6 +449,7 @@ function init() {
 
         wallGeometry.computeBoundingBox();
 
+        // if using debug, give it a specific color
         if (DEBUG) {
             wallMesh = new THREE.Mesh(
                 wallGeometry,
@@ -448,6 +458,11 @@ function init() {
         } else {
             wallMesh = new THREE.Mesh(wallGeometry);
         }
+
+        // move the mesh into the corrent position, otherwise it will be at (0,0,0)
+        wallMesh.translateX(wallJSON.pos.x);
+        wallMesh.translateY(wallJSON.pos.y);
+        wallMesh.translateZ(wallJSON.pos.z);
 
         wallMesh.geometry.userData = {};
         wallMesh.geometry.userData.obb = new OBB().fromBox3(
@@ -458,6 +473,9 @@ function init() {
         wallMeshes.push(wallMesh);
 
         world.add(wallMesh);
+
+        wallMesh.userData.obb.copy(wallMesh.geometry.userData.obb);
+        wallMesh.userData.obb.applyMatrix4(wallMesh.matrixWorld);
     });
 
     scene.add(world);
@@ -514,16 +532,19 @@ function animate() {
     playerMesh.userData.obb.copy(playerMesh.geometry.userData.obb);
     playerMesh.userData.obb.applyMatrix4(playerMesh.matrixWorld);
 
-    //tempMesh.userData.obb.applyMatrix4(tempMesh.matrixWorld);
-
     wallMeshes.forEach((wallMesh) => {
         wallMesh.userData.obb.copy(wallMesh.geometry.userData.obb);
+        wallMesh.userData.obb.applyMatrix4(wallMesh.matrixWorld); // TODO: find a solution without this
 
         if (playerMesh.userData.obb.intersectsOBB(wallMesh.userData.obb)) {
-            //wallMesh.material.color.set(0xff0000);
-            console.log(playerMesh.userData.obb);
+            if (DEBUG) {
+                wallMesh.material.color.set(0xff0000);
+            }
+            //console.log(playerMesh.userData.obb);
         } else {
-            //wallMesh.material.color.set(0x00ffff);
+            if (DEBUG) {
+                wallMesh.material.color.set(0x00ffff);
+            }
         }
     });
 
