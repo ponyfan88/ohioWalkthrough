@@ -390,14 +390,22 @@ function init() {
 
     // floor
 
-    let floorGeometry = new THREE.PlaneGeometry(2000, 2000, 100, 100);
-    let floorMaterial = new THREE.MeshLambertMaterial();
-    floorMaterial.color.setHSL(0.095, 1, 0.75);
+    let floorGeometry;
+    let floorMaterial;
+    let floor;
 
-    let floor = new THREE.Mesh(floorGeometry, floorMaterial);
-    floor.rotation.x = -Math.PI / 2;
-    floor.receiveShadow = true;
-    world.add(floor);
+    mapData.planes.forEach((planeJSON) => {
+        floorGeometry = new THREE.PlaneGeometry(planeJSON.plane[0], planeJSON.plane[1], planeJSON.plane[2], planeJSON.plane[3]);
+        //floorMaterial.color.setHSL(0.095, 1, 0.75);
+        
+        floorMaterial = new THREE.MeshLambertMaterial();
+    
+        floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.receiveShadow = true;
+        floor.rotation.x = -Math.PI / 2;
+
+        world.add(floor);
+    })
 
     // world
 
