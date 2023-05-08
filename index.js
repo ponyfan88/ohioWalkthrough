@@ -500,9 +500,12 @@ function animate() {
     renderer.render(scene, camera);
 }
 
+const DEVELOPER_SCREEN_ASPECT_RATIO_HEIGHT = 10;
+const DEVELOPER_SCREEN_ASPECT_RATIO_WIDTH = 16
+
 function convertFov(fov, vw, vh) {
     return (
-        (Math.atan(Math.tan((fov * Math.PI) / 360) / ((10 / 16) * (vw / vh))) *
+        (Math.atan(Math.tan((fov * Math.PI) / 360) / ((DEVELOPER_SCREEN_ASPECT_RATIO_HEIGHT / DEVELOPER_SCREEN_ASPECT_RATIO_WIDTH) * (vw / vh))) *
             360) /
         Math.PI
     );
