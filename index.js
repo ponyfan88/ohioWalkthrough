@@ -288,6 +288,8 @@ let uniquePaintings = {};
 
 let rotatingSigns = []; // signs to rotate constantly
 
+let audioPlayer = new Audio("assets/audio/music.mp3");
+
 const DEBUG = false;
 
 /*
@@ -460,6 +462,12 @@ function init() {
         world.add(wallMesh);
     });
 
+    //source for all audio: https://www.youtube.com/playlist?list=PLH88srMwnAUXRdIIk6tJPgSgwG4B5gvC9
+    audioPlayer.loop = true;
+    audioPlayer.volume = 0;
+    audioPlayer.play();
+    console.log("Audio Player Created")
+
     scene.add(world);
 }
 
@@ -476,6 +484,8 @@ function animate() {
     if (controls.enabled) {
         crosshair.classList = "enabled";
         controls.update();
+        
+        audioPlayer.volume = 1;
 
         raycaster.set(cameraPos, cameraDirection);
 
@@ -503,6 +513,7 @@ function animate() {
         }*/
     } else {
         crosshair.classList = "";
+        audioPlayer.volume = 0;
     }
 
     playerMesh.position.x = cameraPos.x;
