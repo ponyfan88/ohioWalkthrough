@@ -64,7 +64,7 @@ let makePainting = function (
         sideTextures[(side + 1) % 6] = paintingMaterial;
     }
 
-    let paintingUnmodifiedGeometry = new THREE.BoxBufferGeometry(1, 1, 1);
+    let paintingUnmodifiedGeometry = new THREE.BoxGeometry(1, 1, 1);
 
     let mesh = new THREE.Mesh(paintingUnmodifiedGeometry, sideTextures);
 
@@ -148,7 +148,7 @@ export let makePaintingFromJSON = function (json) {
         sideTextures[(json.side + 1) % 6] = paintingMaterial;
     }
 
-    let paintingUnmodifiedGeometry = new THREE.BoxBufferGeometry(1, 1, 1);
+    let paintingUnmodifiedGeometry = new THREE.BoxGeometry(1, 1, 1);
 
     let mesh = new THREE.Mesh(paintingUnmodifiedGeometry, sideTextures);
 

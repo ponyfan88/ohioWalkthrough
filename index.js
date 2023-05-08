@@ -1,7 +1,7 @@
 import mapData from "./map.json" assert { type: "json" };
-import { OBB } from 'three/addons/math/OBB.js';
-import * as THREE from 'three';
-import  * as PAINT from 'painting';
+import { OBB } from "three/addons/math/OBB.js";
+import * as THREE from "three";
+import * as PAINT from "painting";
 
 let firstPersonControls = function (
     camera,
@@ -270,14 +270,16 @@ if (havePointerLock) {
 }
 
 let description = document.getElementById("description");
-let crosshair = document.getElementById("crosshair")
+let crosshair = document.getElementById("crosshair");
 
-let camera
-let scene
-let renderer
-let controls
-let raycaster
+let camera;
+let scene;
+let renderer;
+let controls;
+let raycaster;
 let world;
+
+let wallMeshes = [];
 
 let cameraPos;
 let cameraDirection;
@@ -286,30 +288,27 @@ let uniquePaintings = {};
 
 let rotatingSigns = []; // signs to rotate constantly
 
-let geometry = new THREE.BoxGeometry(50,50,50)
-geometry.computeBoundingBox();
+const DEBUG = false;
 
-const tempMesh = new THREE.Mesh(
-    geometry,
-    new THREE.MeshBasicMaterial({color: 0x00FFFF}),
-);
-
+/*
 tempMesh.translateX(50);
-tempMesh.translateY(50);
+//tempMesh.translateY(50);
 tempMesh.geometry.userData = {}
 tempMesh.geometry.userData.obb = new OBB().fromBox3(tempMesh.geometry.boundingBox)
 tempMesh.userData.obb = new OBB();
+*/
 
-    
-let playerGeometry = new THREE.BoxGeometry(1,1,1);
+let playerGeometry = new THREE.BoxGeometry(1, 1, 1);
 playerGeometry.computeBoundingBox();
 const playerMesh = new THREE.Mesh(
     playerGeometry,
-    new THREE.MeshBasicMaterial({color: 0xff0000}),
+    new THREE.MeshBasicMaterial({ color: 0xff0000 })
 );
 
 playerMesh.geometry.userData = {};
-playerMesh.geometry.userData.obb = new OBB().fromBox3(playerMesh.geometry.boundingBox);
+playerMesh.geometry.userData.obb = new OBB().fromBox3(
+    playerMesh.geometry.boundingBox
+);
 playerMesh.userData.obb = new OBB();
 playerMesh.matrixAutoUpdate = true;
 
@@ -419,9 +418,40 @@ function init() {
         }
     });
 
-    world.add(tempMesh);
     world.add(playerMesh);
-    
+
+    let wallMesh;
+    let wallGeometry;
+
+    mapData.walls.forEach((wallJSON) => {
+        wallGeometry = new THREE.BoxGeometry(
+            wallJSON.size.x,
+            wallJSON.size.y,
+            wallJSON.size.z
+        );
+
+        wallGeometry.computeBoundingBox();
+
+        if (DEBUG) {
+            wallMesh = new THREE.Mesh(
+                wallGeometry,
+                new THREE.MeshBasicMaterial({ color: 0x00ffff })
+            );
+        } else {
+            wallMesh = new THREE.Mesh(wallGeometry);
+        }
+
+        wallMesh.geometry.userData = {};
+        wallMesh.geometry.userData.obb = new OBB().fromBox3(
+            wallMesh.geometry.boundingBox
+        );
+        wallMesh.userData.obb = new OBB();
+
+        wallMeshes.push(wallMesh);
+
+        world.add(wallMesh);
+    });
+
     scene.add(world);
 }
 
@@ -432,17 +462,14 @@ function animate() {
         element.rotation.y += element.userData.data.rotationAmount;
     });
 
-    cameraPos = camera.getWorldPosition(new THREE.Vector3())
-    cameraDirection = camera.getWorldDirection(new THREE.Vector3())
+    cameraPos = camera.getWorldPosition(new THREE.Vector3());
+    cameraDirection = camera.getWorldDirection(new THREE.Vector3());
 
     if (controls.enabled) {
-        crosshair.classList = "enabled"
+        crosshair.classList = "enabled";
         controls.update();
 
-        raycaster.set(
-            cameraPos,
-            cameraDirection
-        );
+        raycaster.set(cameraPos, cameraDirection);
 
         let intersects = raycaster.intersectObjects(world.children);
 
@@ -450,44 +477,47 @@ function animate() {
             let intersect = intersects[0];
 
             if (intersect.object.userData.type == "painting-clickable") {
-                description.innerText = intersect.object.userData.data.description
-                description.classList = "enabled"
-            }
-            else {
-                description.classList = ""
+                description.innerText =
+                    intersect.object.userData.data.description;
+                description.classList = "enabled";
+            } else {
+                description.classList = "";
             }
         } else {
-            description.classList = ""
+            description.classList = "";
         }
 
-        if (particles.length > 0) {
+        /*if (particles.length > 0) {
             let pLength = particles.length;
             while (pLength--) {
                 particles[pLength].prototype.update(pLength);
             }
-        }
-    }
-    else {
-        crosshair.classList = ""
+        }*/
+    } else {
+        crosshair.classList = "";
     }
 
     playerMesh.position.x = cameraPos.x;
     playerMesh.position.z = cameraPos.z;
 
     // face the same. math stuff.
-    playerMesh.rotation.y = Math.atan2(cameraDirection.x,cameraDirection.z);
+    playerMesh.rotation.y = Math.atan2(cameraDirection.x, cameraDirection.z);
 
-    tempMesh.userData.obb.copy(tempMesh.geometry.userData.obb);
     playerMesh.userData.obb.copy(playerMesh.geometry.userData.obb);
-    tempMesh.userData.obb.applyMatrix4(tempMesh.matrixWorld);
     playerMesh.userData.obb.applyMatrix4(playerMesh.matrixWorld);
-    if (playerMesh.userData.obb.intersectsOBB(tempMesh.userData.obb)) {
-        tempMesh.material.color.set(0xff0000);
-        console.log("Collision Detected");
-    }else{
-        tempMesh.material.color.set(0x00ffff);
-        console.log("No Collision Detected")
-    }
+
+    //tempMesh.userData.obb.applyMatrix4(tempMesh.matrixWorld);
+
+    wallMeshes.forEach((wallMesh) => {
+        wallMesh.userData.obb.copy(wallMesh.geometry.userData.obb);
+
+        if (playerMesh.userData.obb.intersectsOBB(wallMesh.userData.obb)) {
+            //wallMesh.material.color.set(0xff0000);
+            console.log(playerMesh.userData.obb);
+        } else {
+            //wallMesh.material.color.set(0x00ffff);
+        }
+    });
 
     renderer.render(scene, camera);
 }
