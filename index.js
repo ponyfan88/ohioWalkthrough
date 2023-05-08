@@ -180,6 +180,9 @@ let firstPersonControls = function (
     };
 };
 
+const CAMERA_FOV = 75;
+const DEBUG = true; // show walls, color floors, etc.
+
 let instructions = document.querySelector("#instructions");
 
 let description = document.getElementById("description");
@@ -201,8 +204,6 @@ let uniquePaintings = {};
 
 let rotatingSigns = []; // signs to rotate constantly
 
-const DEBUG = true; // show walls, color floors, etc.
-
 let playerGeometry = new THREE.BoxGeometry(1, 1, 1);
 playerGeometry.computeBoundingBox();
 const playerMesh = new THREE.Mesh(
@@ -222,17 +223,13 @@ animate();
 
 function init() {
     camera = new THREE.PerspectiveCamera(
-        (2 *
-            Math.atan(
-                Math.tan(45) /
-                    (((16 / 10) * window.innerWidth) / window.innerHeight)
-            ) *
-            180) /
-            Math.PI,
+        convertFov(CAMERA_FOV, window.innerWidth, window.innerHeight),
         window.innerWidth / window.innerHeight,
         0.1,
         3000
     );
+
+    console.log(camera.fov);
 
     world = new THREE.Group();
 
@@ -260,11 +257,7 @@ function init() {
         function () {
             camera.aspect = window.innerWidth / window.innerHeight;
 
-            camera.fov =
-                (2 *
-                    Math.atan(Math.tan(45) / ((16 / 10) * camera.aspect)) *
-                    180) /
-                Math.PI;
+            camera.fov = convertFov(CAMERA_FOV, window.innerWidth, window.innerHeight);
             camera.updateProjectionMatrix();
 
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -343,7 +336,7 @@ function init() {
 
     // for every plane in the planes section of map.json
     mapData.planes.forEach((planeJSON) => {
-        // plane geometry is formed with 4 numbers 
+        // plane geometry is formed with 4 numbers
         floorGeometry = new THREE.PlaneGeometry(
             planeJSON.plane[0],
             planeJSON.plane[1],
@@ -361,7 +354,7 @@ function init() {
 
         // the floor
         floor = new THREE.Mesh(floorGeometry, floorMaterial);
-        
+
         // shadows should be cast onto this surface
         floor.receiveShadow = true;
 
@@ -439,7 +432,6 @@ function init() {
         wallMesh.userData.obb.applyMatrix4(wallMesh.matrixWorld);
     });
 
-    
     world.add(playerMesh);
 
     scene.add(world);
@@ -506,4 +498,12 @@ function animate() {
     });
 
     renderer.render(scene, camera);
+}
+
+function convertFov(fov, vw, vh) {
+    return (
+        (Math.atan(Math.tan((fov * Math.PI) / 360) / ((10 / 16) * (vw / vh))) *
+            360) /
+        Math.PI
+    );
 }
