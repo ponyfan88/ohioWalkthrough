@@ -198,6 +198,7 @@ let description = document.getElementById("description");
 let crosshair = document.getElementById("crosshair");
 
 let songTitle = document.getElementById("song-title");
+let buttonAdjacentBox = document.getElementById("button-adjacent-box");
 
 let camera;
 let scene;
@@ -573,6 +574,7 @@ function init() {
 
 function animate() {
     songTitle.innerText = shownSongs[songIndex];
+    buttonAdjacentBox.innerText = (songIndex + 1) + "/" + musicData.songs.length;
 
     requestAnimationFrame(animate);
 

@@ -134,3 +134,9 @@ html,
     cursor: pointer;
     user-select: none;
 }
+
+#button-adjacent-box {
+    text-align: right;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5rem;
+}
