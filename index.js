@@ -196,6 +196,8 @@ let controls;
 let raycaster;
 let world;
 
+let interacted = false;
+
 let wallMeshes = [];
 
 let cameraPos;
@@ -205,7 +207,31 @@ let uniquePaintings = {};
 
 let rotatingSigns = []; // signs to rotate constantly
 
-let audioPlayer = new Audio("assets/audio/music.mp3");
+let audioPlayer;
+let songIndex = 0;
+let sourceSongs = musicData.songs;
+let songs = [];
+
+
+setupAudio();
+
+function setupAudio() {
+    for (let _ = 0; _ < musicData.songs.length; _++) {
+        let i = Math.floor(Math.random() * sourceSongs.length);
+        songs.push(musicData.path + sourceSongs[i] + ".mp3")
+        console.log(musicData.path + sourceSongs[i] + ".mp3")
+        sourceSongs.splice(i, 1);
+    }
+
+    audioPlayer = new Audio("assets/audio/test.mp3");
+    
+    audioPlayer.addEventListener("ended", function() {
+        audioPlayer.src = songs[songIndex];
+        songIndex++;
+    })
+}
+
+
 
 /*
 tempMesh.translateX(50);
@@ -233,6 +259,12 @@ init();
 animate();
 
 function init() {
+    //source for all audio: https://www.youtube.com/playlist?list=PLH88srMwnAUXRdIIk6tJPgSgwG4B5gvC9
+    audioPlayer.loop = false; // dont loop audio
+    audioPlayer.volume = 0; // muted by default for no particular reason. we set the volume later once we unpause.
+    //audioPlayer.
+    console.log("Audio Player Created")
+
     camera = new THREE.PerspectiveCamera(
         convertFov(CAMERA_FOV, window.innerWidth, window.innerHeight),
         window.innerWidth / window.innerHeight,
@@ -321,6 +353,11 @@ function init() {
             document.pointerLockElement === document.body ||
             document.mozPointerLockElement === document.body
         ) {
+            if (!interacted) {
+                interacted = true;
+                audioPlayer.play(); // chrome developers decided to only play audio once the user presses something on the page
+            }
+
             controls.enabled = true;
             instructions.style.display = "none";
 
@@ -443,12 +480,6 @@ function init() {
         wallMesh.userData.obb.applyMatrix4(wallMesh.matrixWorld);
     });
 
-    //source for all audio: https://www.youtube.com/playlist?list=PLH88srMwnAUXRdIIk6tJPgSgwG4B5gvC9
-    audioPlayer.loop = true;
-    audioPlayer.volume = 0;
-    audioPlayer.play();
-    console.log("Audio Player Created")
-
     world.add(playerMesh)
 
     scene.add(world);
@@ -468,7 +499,7 @@ function animate() {
         crosshair.classList = "enabled";
         controls.update();
         
-        audioPlayer.volume = 1;
+        audioPlayer.volume = 1; // unmute audio player
 
         raycaster.set(cameraPos, cameraDirection);
 
@@ -489,7 +520,7 @@ function animate() {
         }
     } else {
         crosshair.classList = "";
-        audioPlayer.volume = 0;
+        audioPlayer.volume = 0; //mute audio player
     }
 
     playerMesh.position.x = cameraPos.x;
