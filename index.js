@@ -1,4 +1,5 @@
 import mapData from "./map.json" assert { type: "json" };
+import musicData from "./music.json" assert { type: "json" };
 import { OBB } from "three/addons/math/OBB.js";
 import * as THREE from "three";
 import * as PAINT from "painting";
