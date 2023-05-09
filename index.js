@@ -172,7 +172,7 @@ let firstPersonControls = function (
         if (moveLeft || moveRight) {
             velocity.x -= direction.x * currentSpeed * delta;
         }
-        
+
         scope.getObject().translateX(-velocity.x * delta);
         scope.getObject().translateZ(velocity.z * delta);
 
@@ -417,6 +417,7 @@ function init() {
             if (!interacted) {
                 interacted = true;
                 audioPlayer.play(); // chrome developers decided to only play audio once the user presses something on the page
+                document.getElementById("player").classList = ""
             }
 
             controls.enabled = true;

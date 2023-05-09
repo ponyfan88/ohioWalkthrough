@@ -128,3 +128,7 @@ html,
 
 #button-adjacent-box {
 }
+
+#player.hidden {
+    display: none;
+}
