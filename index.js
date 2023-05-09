@@ -160,14 +160,19 @@ let firstPersonControls = function (
         direction.normalize();
 
         let currentSpeed = scope.speed;
-        if (run && (moveForward || moveBackward || moveLeft || moveRight))
+        
+        if (run && (moveForward || moveBackward || moveLeft || moveRight)) {
             currentSpeed = currentSpeed + currentSpeed * 1.1;
+        }
 
-        if (moveForward || moveBackward)
+        if (moveForward || moveBackward) {
             velocity.z -= direction.z * currentSpeed * delta;
-        if (moveLeft || moveRight)
-            velocity.x -= direction.x * currentSpeed * delta;
+        }
 
+        if (moveLeft || moveRight) {
+            velocity.x -= direction.x * currentSpeed * delta;
+        }
+        
         scope.getObject().translateX(-velocity.x * delta);
         scope.getObject().translateZ(velocity.z * delta);
 
