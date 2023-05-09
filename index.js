@@ -189,6 +189,8 @@ let instructions = document.querySelector("#instructions");
 let description = document.getElementById("description");
 let crosshair = document.getElementById("crosshair");
 
+let songTitle = document.getElementById("song-title");
+
 let camera;
 let scene;
 let renderer;
@@ -207,31 +209,81 @@ let uniquePaintings = {};
 
 let rotatingSigns = []; // signs to rotate constantly
 
-let audioPlayer;
-let songIndex = 0;
+let audioPlayer = new Audio("assets/audio/test.mp3");
+let songIndex = -1;
 let sourceSongs = musicData.songs;
+let shownSongs = [];
 let songs = [];
-
 
 setupAudio();
 
 function setupAudio() {
-    for (let _ = 0; _ < musicData.songs.length; _++) {
-        let i = Math.floor(Math.random() * sourceSongs.length);
-        songs.push(musicData.path + sourceSongs[i] + ".mp3")
-        console.log(musicData.path + sourceSongs[i] + ".mp3")
-        sourceSongs.splice(i, 1);
-    }
+    scrambleMusic();
 
-    audioPlayer = new Audio("assets/audio/test.mp3");
-    
-    audioPlayer.addEventListener("ended", function() {
-        audioPlayer.src = songs[songIndex];
+    audioPlayer.addEventListener("ended", function () {
         songIndex++;
-    })
+        audioPlayer.src = songs[songIndex];
+        audioPlayer.play();
+
+        if (songIndex >= songs.length) {
+            scrambleMusic();
+        }
+    });
 }
 
+function scrambleMusic() {
+    sourceSongs = musicData.songs;
+    songIndex = -1;
+    shownSongs = [];
+    songs = [];
 
+    for (let _ = 0; _ < musicData.songs.length; _++) {
+        let i = Math.floor(Math.random() * sourceSongs.length);
+        songs.push(musicData.path + sourceSongs[i] + ".mp3");
+        shownSongs.push(sourceSongs[i]);
+        sourceSongs.splice(i, 1);
+    }
+}
+
+document.getElementById("previous-button").onclick = function () {
+    console.log(songIndex);
+    if (songIndex <= 0) {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        scrambleMusic();
+        songIndex = 0;
+        audioPlayer.src = songs[songIndex];
+        audioPlayer.play();
+    } else {
+        songIndex--;
+
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        audioPlayer.src = songs[songIndex];
+        audioPlayer.play();
+    }
+};
+
+document.getElementById("next-button").onclick = function () {
+    console.log("skipping");
+    audioPlayer.pause();
+    audioPlayer.currentTime = 0;
+    songIndex++;
+    audioPlayer.src = songs[songIndex];
+    audioPlayer.play();
+};
+
+let audioPaused = false;
+
+document.getElementById("pause-button").onclick = function () {
+    if (audioPaused) {
+        audioPlayer.play();
+    } else {
+        audioPlayer.pause();
+    }
+
+    audioPaused = !audioPaused;
+};
 
 /*
 tempMesh.translateX(50);
@@ -263,7 +315,7 @@ function init() {
     audioPlayer.loop = false; // dont loop audio
     audioPlayer.volume = 0; // muted by default for no particular reason. we set the volume later once we unpause.
     //audioPlayer.
-    console.log("Audio Player Created")
+    console.log("Audio Player Created");
 
     camera = new THREE.PerspectiveCamera(
         convertFov(CAMERA_FOV, window.innerWidth, window.innerHeight),
@@ -300,7 +352,11 @@ function init() {
         function () {
             camera.aspect = window.innerWidth / window.innerHeight;
 
-            camera.fov = convertFov(CAMERA_FOV, window.innerWidth, window.innerHeight);
+            camera.fov = convertFov(
+                CAMERA_FOV,
+                window.innerWidth,
+                window.innerHeight
+            );
             camera.updateProjectionMatrix();
 
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -335,7 +391,7 @@ function init() {
         document.exitPointerLock || document.mozExitPointerLock;
 
     // when we click request the pointer lock
-    document.body.onclick = function () {
+    document.getElementById("instructions").onclick = function () {
         document.body.requestPointerLock();
     };
 
@@ -480,25 +536,27 @@ function init() {
         wallMesh.userData.obb.applyMatrix4(wallMesh.matrixWorld);
     });
 
-    world.add(playerMesh)
+    world.add(playerMesh);
 
     scene.add(world);
 }
 
 function animate() {
-    requestAnimationFrame(animate);
+    songTitle.innerText = shownSongs[songIndex];
 
-    rotatingSigns.forEach((element) => {
-        element.rotation.y += element.userData.data.rotationAmount;
-    });
+    requestAnimationFrame(animate);
 
     cameraPos = camera.getWorldPosition(new THREE.Vector3());
     cameraDirection = camera.getWorldDirection(new THREE.Vector3());
 
     if (controls.enabled) {
+        rotatingSigns.forEach((element) => {
+            element.rotation.y += element.userData.data.rotationAmount;
+        });
+
         crosshair.classList = "enabled";
         controls.update();
-        
+
         audioPlayer.volume = 1; // unmute audio player
 
         raycaster.set(cameraPos, cameraDirection);
@@ -520,7 +578,7 @@ function animate() {
         }
     } else {
         crosshair.classList = "";
-        audioPlayer.volume = 0; //mute audio player
+        audioPlayer.volume = 0.1; //lower audio player
     }
 
     playerMesh.position.x = cameraPos.x;
@@ -543,18 +601,19 @@ function animate() {
             //console.log(playerMesh.userData.obb);
 
             let playerPos = playerMesh.getWorldPosition(new THREE.Vector3());
-            let playerDirection = playerMesh.getWorldDirection(new THREE.Vector3());
+            let playerDirection = playerMesh.getWorldDirection(
+                new THREE.Vector3()
+            );
 
             raycaster.set(playerPos, playerDirection);
 
             let intersects = raycaster.intersectObjects(wallMesh);
 
-            console.log(intersects)
+            console.log(intersects);
 
             if (intersects.length > 0) {
                 console.log(intersects[0]);
             }
-
         } else {
             if (DEBUG) {
                 wallMesh.material.color.set(0x00ffff);
@@ -568,9 +627,14 @@ function animate() {
 function convertFov(fov, vw, vh) {
     const DEVELOPER_SCREEN_ASPECT_RATIO_HEIGHT = 10;
     const DEVELOPER_SCREEN_ASPECT_RATIO_WIDTH = 16;
-    
+
     return (
-        (Math.atan(Math.tan((fov * Math.PI) / 360) / ((DEVELOPER_SCREEN_ASPECT_RATIO_HEIGHT / DEVELOPER_SCREEN_ASPECT_RATIO_WIDTH) * (vw / vh))) *
+        (Math.atan(
+            Math.tan((fov * Math.PI) / 360) /
+                ((DEVELOPER_SCREEN_ASPECT_RATIO_HEIGHT /
+                    DEVELOPER_SCREEN_ASPECT_RATIO_WIDTH) *
+                    (vw / vh))
+        ) *
             360) /
         Math.PI
     );

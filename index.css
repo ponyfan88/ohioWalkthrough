@@ -10,9 +10,8 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
 
-    display: -webkit-box;
-    display: -moz-box;
-    display: box;
+    display:grid;
+    grid-template-rows: 1fr 1fr;
 
     -webkit-box-orient: horizontal;
     -moz-box-orient: horizontal;
@@ -103,4 +102,29 @@ html,
     margin: 0;
     padding: 0;
     overflow: hidden;
+}
+
+#player {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    padding: 0.5rem;
+    text-align: right;
+    background-color: #ffffff77;
+    border-top-left-radius: 1rem;
+    gap: 0.25rem;
+    display: grid;
+    grid-auto-columns: 2;
+}
+
+#playback-buttons {
+    display:grid;
+    grid-template-columns: 1fr repeat(3, 1.25rem);
+}
+
+#song-title {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#button-adjacent-box {
 }
