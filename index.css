@@ -126,9 +126,11 @@ html,
     font-family: Arial, Helvetica, sans-serif;
 }
 
-#button-adjacent-box {
-}
-
 #player.hidden {
     display: none;
+}
+
+#playback-buttons > div:not(#button-adjacent-box) {
+    cursor: pointer;
+    user-select: none;
 }

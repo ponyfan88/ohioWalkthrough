@@ -58,8 +58,6 @@ let firstPersonControls = function (
     };
 
     let onKeyDown = function (event) {
-        if (scope.enabled === false) return;
-
         switch (event.keyCode) {
             case 38: // up
             case 87: // w
@@ -88,8 +86,6 @@ let firstPersonControls = function (
     }.bind(this);
 
     let onKeyUp = function (event) {
-        if (scope.enabled === false) return;
-
         switch (event.keyCode) {
             case 38: // up
             case 87: // w
@@ -118,12 +114,17 @@ let firstPersonControls = function (
     }.bind(this);
 
     let onMouseDownClick = function (event) {
-        if (scope.enabled === false) return;
+        if (!scope.enabled)
+        {
+            return;
+        }
         scope.click = true;
     }.bind(this);
 
     let onMouseUpClick = function (event) {
-        if (scope.enabled === false) return;
+        if (!scope.enabled) {
+            return;
+        }
         scope.click = false;
     }.bind(this);
 
@@ -151,36 +152,38 @@ let firstPersonControls = function (
         let time = performance.now();
         let delta = (time - prevTime) / 1000;
 
-        velocity.y -= 9.8 * 100.0 * delta;
-        velocity.x -= velocity.x * 10.0 * delta;
-        velocity.z -= velocity.z * 10.0 * delta;
+        if (scope.enabled) {
+            velocity.y -= 9.8 * 100.0 * delta;
+            velocity.x -= velocity.x * 10.0 * delta;
+            velocity.z -= velocity.z * 10.0 * delta;
 
-        direction.z = Number(moveForward) - Number(moveBackward);
-        direction.x = Number(moveRight) - Number(moveLeft);
-        direction.normalize();
+            direction.z = Number(moveForward) - Number(moveBackward);
+            direction.x = Number(moveRight) - Number(moveLeft);
+            direction.normalize();
 
-        let currentSpeed = scope.speed;
-        
-        if (run && (moveForward || moveBackward || moveLeft || moveRight)) {
-            currentSpeed = currentSpeed + currentSpeed * 1.1;
-        }
+            let currentSpeed = scope.speed;
+            
+            if (run && (moveForward || moveBackward || moveLeft || moveRight)) {
+                currentSpeed = currentSpeed + currentSpeed * 1.1;
+            }
 
-        if (moveForward || moveBackward) {
-            velocity.z -= direction.z * currentSpeed * delta;
-        }
+            if (moveForward || moveBackward) {
+                velocity.z -= direction.z * currentSpeed * delta;
+            }
 
-        if (moveLeft || moveRight) {
-            velocity.x -= direction.x * currentSpeed * delta;
-        }
+            if (moveLeft || moveRight) {
+                velocity.x -= direction.x * currentSpeed * delta;
+            }
 
-        scope.getObject().translateX(-velocity.x * delta);
-        scope.getObject().translateZ(velocity.z * delta);
+            scope.getObject().translateX(-velocity.x * delta);
+            scope.getObject().translateZ(velocity.z * delta);
 
-        scope.getObject().position.y += velocity.y * delta;
+            scope.getObject().position.y += velocity.y * delta;
 
-        if (scope.getObject().position.y < scope.height) {
-            velocity.y = 0;
-            scope.getObject().position.y = scope.height;
+            if (scope.getObject().position.y < scope.height) {
+                velocity.y = 0;
+                scope.getObject().position.y = scope.height;
+            }
         }
         prevTime = time;
     };
@@ -216,7 +219,7 @@ let rotatingSigns = []; // signs to rotate constantly
 
 let audioPlayer = new Audio("assets/audio/test.mp3");
 let songIndex = -1;
-let sourceSongs = musicData.songs;
+let sourceSongs = [...musicData.songs];
 let shownSongs = [];
 let songs = [];
 
@@ -226,6 +229,8 @@ function setupAudio() {
     scrambleMusic();
 
     audioPlayer.addEventListener("ended", function () {
+        document.getElementById("player").classList = ""
+
         songIndex++;
         audioPlayer.src = songs[songIndex];
         audioPlayer.play();
@@ -237,7 +242,7 @@ function setupAudio() {
 }
 
 function scrambleMusic() {
-    sourceSongs = musicData.songs;
+    sourceSongs = [...musicData.songs];
     songIndex = -1;
     shownSongs = [];
     songs = [];
@@ -257,7 +262,7 @@ document.getElementById("previous-button").onclick = function () {
         audioPlayer.currentTime = 0;
         scrambleMusic();
         songIndex = 0;
-        audioPlayer.src = songs[songIndex];
+        audioPlayer.src = songs[0];
         audioPlayer.play();
     } else {
         songIndex--;
@@ -270,12 +275,26 @@ document.getElementById("previous-button").onclick = function () {
 };
 
 document.getElementById("next-button").onclick = function () {
-    console.log("skipping");
-    audioPlayer.pause();
-    audioPlayer.currentTime = 0;
-    songIndex++;
-    audioPlayer.src = songs[songIndex];
-    audioPlayer.play();
+    
+    console.log(songIndex)
+    console.log(musicData.songs.length)
+
+    if (songIndex == musicData.songs.length - 1) {
+        console.log("reached end of songs. resetting!")
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        scrambleMusic();
+        songIndex = 0;
+        audioPlayer.src = songs[0];
+        audioPlayer.play();
+    } else {
+        console.log("skipping");
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        songIndex++;
+        audioPlayer.src = songs[songIndex];
+        audioPlayer.play();
+    }
 };
 
 let audioPaused = false;
@@ -283,8 +302,12 @@ let audioPaused = false;
 document.getElementById("pause-button").onclick = function () {
     if (audioPaused) {
         audioPlayer.play();
+
+        document.getElementById("pause-button").innerText = "⏸️";
     } else {
         audioPlayer.pause();
+
+        document.getElementById("pause-button").innerText = "▶️";
     }
 
     audioPaused = !audioPaused;
@@ -410,6 +433,8 @@ function init() {
     );
 
     function pointerLockChanged() {
+        console.log(controls.moveForward)
+
         if (
             document.pointerLockElement === document.body ||
             document.mozPointerLockElement === document.body
@@ -417,7 +442,6 @@ function init() {
             if (!interacted) {
                 interacted = true;
                 audioPlayer.play(); // chrome developers decided to only play audio once the user presses something on the page
-                document.getElementById("player").classList = ""
             }
 
             controls.enabled = true;
@@ -561,7 +585,6 @@ function animate() {
         });
 
         crosshair.classList = "enabled";
-        controls.update();
 
         audioPlayer.volume = 1; // unmute audio player
 
@@ -585,6 +608,12 @@ function animate() {
     } else {
         crosshair.classList = "";
         audioPlayer.volume = 0.1; //lower audio player
+
+        
+        controls.moveForward = false;
+        controls.moveBackward = false;
+        controls.moveRight = false;
+        controls.moveLeft = false;
     }
 
     playerMesh.position.x = cameraPos.x;
@@ -604,7 +633,6 @@ function animate() {
             if (DEBUG) {
                 wallMesh.material.color.set(0xff0000);
             }
-            //console.log(playerMesh.userData.obb);
 
             let playerPos = playerMesh.getWorldPosition(new THREE.Vector3());
             let playerDirection = playerMesh.getWorldDirection(
@@ -626,6 +654,8 @@ function animate() {
             }
         }
     });
+
+    controls.update();
 
     renderer.render(scene, camera);
 }
