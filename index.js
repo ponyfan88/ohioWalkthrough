@@ -239,6 +239,8 @@ function setupAudio() {
         if (songIndex >= songs.length) {
             scrambleMusic();
         }
+    
+        songChanged();
     });
 }
 
@@ -273,6 +275,8 @@ document.getElementById("previous-button").onclick = function () {
         audioPlayer.src = songs[songIndex];
         audioPlayer.play();
     }
+    
+    songChanged();
 };
 
 document.getElementById("next-button").onclick = function () {
@@ -296,6 +300,8 @@ document.getElementById("next-button").onclick = function () {
         audioPlayer.src = songs[songIndex];
         audioPlayer.play();
     }
+
+    songChanged();
 };
 
 let audioPaused = false;
@@ -312,6 +318,8 @@ document.getElementById("pause-button").onclick = function () {
     }
 
     audioPaused = !audioPaused;
+
+    songChanged();
 };
 
 /*
@@ -572,9 +580,13 @@ function init() {
     scene.add(world);
 }
 
-function animate() {
+function songChanged() {
     songTitle.innerText = shownSongs[songIndex];
-    buttonAdjacentBox.innerText = (songIndex + 1) + "/" + musicData.songs.length;
+    buttonAdjacentBox.innerText = (songIndex + 1) + "/" + musicData.songs.length + "\u00A0";
+}
+
+function animate() {
+    
 
     requestAnimationFrame(animate);
 
