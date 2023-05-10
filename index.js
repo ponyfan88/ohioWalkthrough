@@ -664,9 +664,6 @@ function animate() {
         avelo[1]
     );
 
-    //console.log(velo)
-
-
     let playerRay = new THREE.Raycaster(playerMesh.position, velo);
 
     let rayIntersects = playerRay.intersectObjects(wallMeshes);
@@ -682,18 +679,13 @@ function animate() {
         );
     }
 
-    //console.log(rayIntersects);
-
     for (let i = 0; i < rayIntersects.length; i++) {
         if (DEBUG) {
             rayIntersects[i].object.material.color.set(0xff0000);
         }
 
-        if (rayIntersects[i].distance <= 2) {
+        if (rayIntersects[i].distance <= 4) {
             console.log("HITTING A DAMN WALL")
-
-            //camera.position.x -= avelo[0]
-            //camera.position.z -= avelo[1]
 
             controls.stop(avelo)
         }
