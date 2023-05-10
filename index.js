@@ -360,8 +360,6 @@ function init() {
         3000
     );
 
-    console.log(camera.fov);
-
     world = new THREE.Group();
 
     raycaster = new THREE.Raycaster(
