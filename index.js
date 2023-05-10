@@ -179,14 +179,13 @@ let firstPersonControls = function (
             scope.getObject().translateZ(velocity.z * delta);
 
             scope.getObject().position.y += velocity.y * delta;
-
-            if (scope.getObject().position.y < scope.height) {
-                velocity.y = 0;
-                scope.getObject().position.y = scope.height;
-            }
         }
         prevTime = time;
+
+        scope.getObject().position.y = scope.height; // needs to be in update or else the camera falls
     };
+
+    scope.getObject().position.y = scope.height;
 };
 
 const CAMERA_FOV = 75;
