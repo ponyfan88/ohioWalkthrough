@@ -97,6 +97,76 @@
             "data": {
                 "description": "this is a pretty epic test"
             }
+        },
+        {
+            "id": "",
+            "pos": { "x": 80, "y": 30, "z": -250},
+            "side": 1,
+            "texture": "../cosiDino.jpg",
+            "size": { "x": 0.1, "y": 60, "z": 90},
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "beware"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": -60, "y": 30, "z": -425},
+            "side": 0,
+            "texture": "../cosiExt.jpg",
+            "size": { "x": 0.1, "y": 40, "z": 53.2},
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "birb"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": 60, "y": 30, "z": -325},
+            "side": 1,
+            "texture": "../cosiOutside.jpg",
+            "size": { "x": 0.1, "y": 20, "z": 28.6},
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "the outside of the building"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": -70, "y": 30, "z": -300},
+            "side": 0,
+            "texture": "../cosiSkinwalker.jpg",
+            "size": { "x": 0.1, "y": 80, "z": 146.4},
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "there are no skinwalkers in this image"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": 150, "y": 30, "z": -425},
+            "side": 1,
+            "texture": "../cosiStatue.jpg",
+            "size": { "x": 0.1, "y": 200, "z": 150},
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "erf"
+            }
         }
     ],
     "blocks": [
