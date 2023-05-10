@@ -5,7 +5,8 @@ import * as THREE from "three";
 import * as PAINT from "painting";
 
 const CAMERA_FOV = 75;
-const DEBUG = false; // show walls, color floors, etc.
+const DEBUG = true; // show walls, color floors, etc.
+const DEBUG_VELOCITY = false;
 
 // copy and pasted early version of firstpersoncontrols. works well enough. might be changed later.
 let firstPersonControls = function (
@@ -47,7 +48,7 @@ let firstPersonControls = function (
         if (!scope.enabled) {
             return;
         }
-        
+
         let movementX =
             event.movementX || event.mozMovementX || event.webkitMovementX || 0;
         let movementY =
@@ -119,8 +120,7 @@ let firstPersonControls = function (
     }.bind(this);
 
     let onMouseDownClick = function (event) {
-        if (!scope.enabled)
-        {
+        if (!scope.enabled) {
             return;
         }
         scope.click = true;
@@ -167,7 +167,7 @@ let firstPersonControls = function (
             direction.normalize();
 
             let currentSpeed = scope.speed;
-            
+
             if (run && (moveForward || moveBackward || moveLeft || moveRight)) {
                 currentSpeed = currentSpeed + currentSpeed * 1.1;
             }
@@ -188,6 +188,17 @@ let firstPersonControls = function (
         prevTime = time;
 
         scope.getObject().position.y = scope.height; // needs to be in update or else the camera falls
+    };
+
+    scope.stop = function (mov) {
+        console.log(velocity)
+        velocity.x *= -2
+        velocity.z *= -2
+        console.log(velocity)
+    };
+
+    scope.get = function () {
+        return direction;
     };
 
     scope.getObject().position.y = scope.height;
@@ -231,7 +242,7 @@ function setupAudio() {
     scrambleMusic();
 
     audioPlayer.addEventListener("ended", function () {
-        document.getElementById("player").classList = ""
+        document.getElementById("player").classList = "";
 
         songIndex++;
         audioPlayer.src = songs[songIndex];
@@ -240,7 +251,7 @@ function setupAudio() {
         if (songIndex >= songs.length) {
             scrambleMusic();
         }
-    
+
         songChanged();
     });
 }
@@ -276,17 +287,16 @@ document.getElementById("previous-button").onclick = function () {
         audioPlayer.src = songs[songIndex];
         audioPlayer.play();
     }
-    
+
     songChanged();
 };
 
 document.getElementById("next-button").onclick = function () {
-    
-    console.log(songIndex)
-    console.log(musicData.songs.length)
+    console.log(songIndex);
+    console.log(musicData.songs.length);
 
     if (songIndex == musicData.songs.length - 1) {
-        console.log("reached end of songs. resetting!")
+        console.log("reached end of songs. resetting!");
         audioPlayer.pause();
         audioPlayer.currentTime = 0;
         scrambleMusic();
@@ -344,6 +354,9 @@ playerMesh.geometry.userData.obb = new OBB().fromBox3(
 );
 playerMesh.userData.obb = new OBB();
 playerMesh.matrixAutoUpdate = true;
+
+let cvelo
+let cveloPREVIOUS
 
 init();
 animate();
@@ -441,8 +454,6 @@ function init() {
     );
 
     function pointerLockChanged() {
-        console.log(controls.moveForward)
-
         if (
             document.pointerLockElement === document.body ||
             document.mozPointerLockElement === document.body
@@ -581,12 +592,11 @@ function init() {
 
 function songChanged() {
     songTitle.innerText = shownSongs[songIndex];
-    buttonAdjacentBox.innerText = (songIndex + 1) + "/" + musicData.songs.length + "\u00A0";
+    buttonAdjacentBox.innerText =
+        songIndex + 1 + "/" + musicData.songs.length + "\u00A0";
 }
 
 function animate() {
-    
-
     requestAnimationFrame(animate);
 
     cameraPos = camera.getWorldPosition(new THREE.Vector3());
@@ -622,50 +632,72 @@ function animate() {
         crosshair.classList = "";
         audioPlayer.volume = 0.1; //lower audio player
 
-        
-        controls.moveForward = false;
-        controls.moveBackward = false;
-        controls.moveRight = false;
-        controls.moveLeft = false;
+        controls.update.moveForward = false;
+        controls.update.moveBackward = false;
+        controls.update.moveRight = false;
+        controls.update.moveLeft = false;
     }
 
     playerMesh.position.x = cameraPos.x;
     playerMesh.position.z = cameraPos.z;
 
     // face the same. math stuff.
-    playerMesh.rotation.y = Math.atan2(cameraDirection.x, cameraDirection.z);
+    let playerAngle = Math.atan2(cameraDirection.x, cameraDirection.z);
+    playerMesh.rotation.y = playerAngle; 
 
-    playerMesh.userData.obb.copy(playerMesh.geometry.userData.obb);
-    playerMesh.userData.obb.applyMatrix4(playerMesh.matrixWorld);
+    cveloPREVIOUS = cvelo
+    cvelo = controls.get();
 
-    wallMeshes.forEach((wallMesh) => {
-        wallMesh.userData.obb.copy(wallMesh.geometry.userData.obb);
-        wallMesh.userData.obb.applyMatrix4(wallMesh.matrixWorld); // TODO: find a solution without this
+    if (cvelo.x == 0) {
+        cvelo.x = cveloPREVIOUS.x
+    } 
 
-        if (playerMesh.userData.obb.intersectsOBB(wallMesh.userData.obb)) {
-            if (DEBUG) {
-                wallMesh.material.color.set(0xff0000);
-            }
+    if (cvelo.y == 0) {
+        cvelo.y = cveloPREVIOUS.y;
+    }
 
-            let playerPos = playerMesh.getWorldPosition(new THREE.Vector3());
-            let playerDirection = playerMesh.getWorldDirection(
-                new THREE.Vector3()
-            );
+    let avelo = rotate(cvelo.x, cvelo.z, playerAngle)
 
-            raycaster.set(playerPos, playerDirection);
+    let velo = new THREE.Vector3(
+        avelo[0],
+        0,
+        avelo[1]
+    );
 
-            let intersects = raycaster.intersectObjects(wallMesh);
+    //console.log(velo)
 
 
-            if (intersects.length > 0) {
-                console.log(intersects[0]);
-            }
-        } else {
-            if (DEBUG) {
-                wallMesh.material.color.set(0x00ffff);
-            }
+    let playerRay = new THREE.Raycaster(playerMesh.position, velo);
+
+    let rayIntersects = playerRay.intersectObjects(wallMeshes);
+
+    if (DEBUG_VELOCITY) {
+        scene.add(
+            new THREE.ArrowHelper(
+                playerRay.ray.direction,
+                playerRay.ray.origin,
+                10,
+                0xff0000
+            )
+        );
+    }
+
+    //console.log(rayIntersects);
+
+    for (let i = 0; i < rayIntersects.length; i++) {
+        if (DEBUG) {
+            rayIntersects[i].object.material.color.set(0xff0000);
         }
-    });
+
+        if (rayIntersects[i].distance <= 2) {
+            console.log("HITTING A DAMN WALL")
+
+            //camera.position.x -= avelo[0]
+            //camera.position.z -= avelo[1]
+
+            controls.stop(avelo)
+        }
+    }
 
     controls.update();
 
@@ -686,4 +718,12 @@ function convertFov(fov, vw, vh) {
             360) /
         Math.PI
     );
+}
+
+function rotate(x, y, angle) {
+    let cos = Math.cos(angle),
+        sin = Math.sin(angle),
+        nx = (cos * (-1 * x)) + (sin * (y)),
+        ny = (cos * (y)) - (sin * (-1 * x));
+    return [nx, ny];
 }
