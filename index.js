@@ -4,6 +4,9 @@ import { OBB } from "three/addons/math/OBB.js";
 import * as THREE from "three";
 import * as PAINT from "painting";
 
+const CAMERA_FOV = 75;
+const DEBUG = false; // show walls, color floors, etc.
+
 // copy and pasted early version of firstpersoncontrols. works well enough. might be changed later.
 let firstPersonControls = function (
     camera,
@@ -187,9 +190,6 @@ let firstPersonControls = function (
 
     scope.getObject().position.y = scope.height;
 };
-
-const CAMERA_FOV = 75;
-const DEBUG = true; // show walls, color floors, etc.
 
 let instructions = document.querySelector("#instructions");
 
