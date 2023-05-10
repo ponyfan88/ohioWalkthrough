@@ -654,7 +654,6 @@ function animate() {
 
             let intersects = raycaster.intersectObjects(wallMesh);
 
-            console.log(intersects);
 
             if (intersects.length > 0) {
                 console.log(intersects[0]);
