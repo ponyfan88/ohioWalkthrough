@@ -44,8 +44,10 @@ let firstPersonControls = function (
     let PI_2 = Math.PI / 2;
 
     let onMouseMove = function (event) {
-        if (scope.enabled === false) return;
-
+        if (!scope.enabled) {
+            return;
+        }
+        
         let movementX =
             event.movementX || event.mozMovementX || event.webkitMovementX || 0;
         let movementY =
