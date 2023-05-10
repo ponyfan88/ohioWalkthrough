@@ -4,6 +4,9 @@ import { OBB } from "three/addons/math/OBB.js";
 import * as THREE from "three";
 import * as PAINT from "painting";
 
+const CAMERA_FOV = 75;
+const DEBUG = false; // show walls, color floors, etc.
+
 // copy and pasted early version of firstpersoncontrols. works well enough. might be changed later.
 let firstPersonControls = function (
     camera,
@@ -41,8 +44,10 @@ let firstPersonControls = function (
     let PI_2 = Math.PI / 2;
 
     let onMouseMove = function (event) {
-        if (scope.enabled === false) return;
-
+        if (!scope.enabled) {
+            return;
+        }
+        
         let movementX =
             event.movementX || event.mozMovementX || event.webkitMovementX || 0;
         let movementY =
@@ -179,18 +184,14 @@ let firstPersonControls = function (
             scope.getObject().translateZ(velocity.z * delta);
 
             scope.getObject().position.y += velocity.y * delta;
-
-            if (scope.getObject().position.y < scope.height) {
-                velocity.y = 0;
-                scope.getObject().position.y = scope.height;
-            }
         }
         prevTime = time;
-    };
-};
 
-const CAMERA_FOV = 75;
-const DEBUG = true; // show walls, color floors, etc.
+        scope.getObject().position.y = scope.height; // needs to be in update or else the camera falls
+    };
+
+    scope.getObject().position.y = scope.height;
+};
 
 let instructions = document.querySelector("#instructions");
 
@@ -239,6 +240,8 @@ function setupAudio() {
         if (songIndex >= songs.length) {
             scrambleMusic();
         }
+    
+        songChanged();
     });
 }
 
@@ -273,6 +276,8 @@ document.getElementById("previous-button").onclick = function () {
         audioPlayer.src = songs[songIndex];
         audioPlayer.play();
     }
+    
+    songChanged();
 };
 
 document.getElementById("next-button").onclick = function () {
@@ -296,6 +301,8 @@ document.getElementById("next-button").onclick = function () {
         audioPlayer.src = songs[songIndex];
         audioPlayer.play();
     }
+
+    songChanged();
 };
 
 let audioPaused = false;
@@ -312,6 +319,8 @@ document.getElementById("pause-button").onclick = function () {
     }
 
     audioPaused = !audioPaused;
+
+    songChanged();
 };
 
 /*
@@ -352,8 +361,6 @@ function init() {
         0.1,
         3000
     );
-
-    console.log(camera.fov);
 
     world = new THREE.Group();
 
@@ -572,9 +579,13 @@ function init() {
     scene.add(world);
 }
 
-function animate() {
+function songChanged() {
     songTitle.innerText = shownSongs[songIndex];
-    buttonAdjacentBox.innerText = (songIndex + 1) + "/" + musicData.songs.length;
+    buttonAdjacentBox.innerText = (songIndex + 1) + "/" + musicData.songs.length + "\u00A0";
+}
+
+function animate() {
+    
 
     requestAnimationFrame(animate);
 
@@ -645,7 +656,6 @@ function animate() {
 
             let intersects = raycaster.intersectObjects(wallMesh);
 
-            console.log(intersects);
 
             if (intersects.length > 0) {
                 console.log(intersects[0]);
