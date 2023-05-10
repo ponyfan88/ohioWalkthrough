@@ -97,6 +97,62 @@
             "data": {
                 "description": "this is a pretty epic test"
             }
+        },
+        {
+            "id": "",
+            "pos": { "x": 30, "y": 30, "z": -250},
+            "side": 1,
+            "texture": "../cosiDino.jpg",
+            "size": { "x": 0.1, "y": 20, "z": 30},
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "beware"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": -30, "y": 30, "z": -250},
+            "side": 0,
+            "texture": "../cosiExt.jpg",
+            "size": { "x": 0.1, "y": 30, "z": 40},
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "birb"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": 30, "y": 30, "z": -300},
+            "side": 1,
+            "texture": "../cosiOutside.jpg",
+            "size": { "x": 0.1, "y": 20, "z": 28.6},
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "the outside of the building"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": -30, "y": 30, "z": -300},
+            "side": 0,
+            "texture": "../cosiSkinwalker.jpg",
+            "size": { "x": 0.1, "y": 20, "z": 36.6},
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "there are no skinwalkers in this image"
+            }
         }
     ],
     "blocks": [
