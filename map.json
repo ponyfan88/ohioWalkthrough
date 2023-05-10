@@ -117,7 +117,7 @@
             "pos": { "x": -30, "y": 30, "z": -250},
             "side": 0,
             "texture": "../cosiExt.jpg",
-            "size": { "x": 0.1, "y": 30, "z": 40},
+            "size": { "x": 0.1, "y": 20, "z": 26.6},
             "transparent": false,
             "pixelated": false,
             "doublesided": false,
