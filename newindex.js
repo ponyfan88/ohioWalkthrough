@@ -348,7 +348,7 @@ loader.load("collision.gltf", (gltf) => {
             child.material = new THREE.MeshLambertMaterial({
                 color: 0x0000ff,
                 transparent: true,
-                opacity: 0,
+                opacity: 0.1,
                 depthWrite: false
             });
         }
@@ -365,10 +365,15 @@ loader.load("collision.gltf", (gltf) => {
 
         gltf.scene.traverse((child) => {
             if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
+                child.castShadow = false;
+                child.receiveShadow = false;
                 child.material = new THREE.MeshLambertMaterial({
-                    color: 0xd8d6ef,
+                    color: 0xff00ff,
+                    side: 2,
+                    shading: THREE.FlatShading,
+                    transparent: true,
+                    opacity: 1,
+                    depthWrite: false
                 });
             }
         });
