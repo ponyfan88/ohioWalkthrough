@@ -14,8 +14,8 @@ import { Capsule } from "three/addons/math/Capsule.js";
 const clock = new THREE.Clock();
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x88ccee);
-//scene.fog = new THREE.Fog(0x88ccee, 0, 50);
+scene.background = new THREE.Color(0xffffff);
+scene.fog = new THREE.Fog(0xffffff, 0, 2000);
 
 let world = new THREE.Group();
 const ws = 0.03;
