@@ -29,24 +29,20 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.rotation.order = "YXZ";
 
-const fillLight1 = new THREE.HemisphereLight(0x8dc1de, 0x00668d, 0.5);
-fillLight1.position.set(2, 1, 1);
-scene.add(fillLight1);
+let light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
+light.position.set(0, 100, 0.4);
+scene.add(light);
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-directionalLight.position.set(-5, 25, -1);
-directionalLight.castShadow = true;
-directionalLight.shadow.camera.near = 0.01;
-directionalLight.shadow.camera.far = 500;
-directionalLight.shadow.camera.right = 30;
-directionalLight.shadow.camera.left = -30;
-directionalLight.shadow.camera.top = 30;
-directionalLight.shadow.camera.bottom = -30;
-directionalLight.shadow.mapSize.width = 1024;
-directionalLight.shadow.mapSize.height = 1024;
-directionalLight.shadow.radius = 4;
-directionalLight.shadow.bias = -0.00006;
-scene.add(directionalLight);
+let dirLight = new THREE.SpotLight(0xffffff, 0.5, 0.0, 180.0);
+dirLight.color.setHSL(0.1, 1, 0.95);
+dirLight.position.set(0, 300, 100);
+dirLight.castShadow = true;
+dirLight.lookAt(new THREE.Vector3());
+scene.add(dirLight);
+
+dirLight.shadow.mapSize.width = 4096;
+dirLight.shadow.mapSize.height = 4096;
+dirLight.shadow.camera.far = 3000;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
