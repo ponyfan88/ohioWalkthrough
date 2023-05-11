@@ -437,15 +437,15 @@ function animate() {
     // we look for collisions in substeps to mitigate the risk of
     // an object traversing another too quickly for detection.
 
-    for (let i = 0; i < STEPS_PER_FRAME; i++) {
-        controls(deltaTime);
-
-        updatePlayer(deltaTime);
-
-        teleportPlayerIfOob();
-    }
-
     if (controlsEnabled) {
+        for (let i = 0; i < STEPS_PER_FRAME; i++) {
+            controls(deltaTime);
+    
+            updatePlayer(deltaTime);
+    
+            teleportPlayerIfOob();
+        }
+
         rotatingSigns.forEach((element) => {
             element.rotation.y += element.userData.data.rotationAmount;
         });
@@ -474,12 +474,12 @@ function animate() {
         } else {
             description.classList = "";
         }
+
+        renderer.render(scene, camera);
     } else {
         crosshair.classList = "";
         audioPlayer.volume = 0.1; //lower audio player
     }
-
-    renderer.render(scene, camera);
 
     requestAnimationFrame(animate);
 }
