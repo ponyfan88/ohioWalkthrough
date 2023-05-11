@@ -2,3 +2,4 @@ cosiExt.jpg: https://www.google.com/url?sa=i&url=https%3A%2F%2Fcosi.org%2F&psig=
 cosiDino.jpg: https://www.experiencecolumbus.com/listing/cosi/5658/
 cosiSkinwalker: https://www.fmsp.com/projects/center-of-science-and-industry-cosi/
 cosiOutside: https://gypsyroadtrip.com/tag/cosi/
+costStatue: https://whatshouldwedotodaycolumbus.com/cosi-science-museum-columbus-ohio/
