@@ -335,8 +335,7 @@ function controls(deltaTime) {
 const loader = new GLTFLoader().setPath("assets/3d/");
 
 loader.load("collision.gltf", (gltf) => {
-
-    gltf.scene.rotation.y = Math.PI
+    gltf.scene.rotation.y = Math.PI;
 
     scene.add(gltf.scene);
 
@@ -360,8 +359,8 @@ loader.load("collision.gltf", (gltf) => {
     scene.add(helper);
 
     loader.load("room.gltf", (gltf) => {
-        gltf.scene.rotation.y = Math.PI
-        
+        gltf.scene.rotation.y = Math.PI;
+
         scene.add(gltf.scene);
 
         gltf.scene.traverse((child) => {
@@ -385,7 +384,6 @@ function addPaintings() {
 
     // for every painting in the paintings section of map.json
     mapData.paintings.forEach((paintingJSON) => {
-
         painting = PAINT.makePaintingFromJSON(paintingJSON);
         painting.userData.type = paintingJSON.type;
         painting.userData.data = paintingJSON.data;
@@ -402,7 +400,7 @@ function addPaintings() {
         }
     });
 
-    scene.add(world)
+    scene.add(world);
 
     animate();
 }
@@ -456,7 +454,10 @@ function animate() {
 
         audioPlayer.volume = 1; // unmute audio player
 
-        raycaster.set(camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()));
+        raycaster.set(
+            camera.getWorldPosition(new THREE.Vector3()),
+            camera.getWorldDirection(new THREE.Vector3())
+        );
 
         let intersects = raycaster.intersectObjects(world.children);
 
