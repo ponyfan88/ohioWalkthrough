@@ -19,7 +19,7 @@ scene.fog = new THREE.Fog(0xffffff, 0, 2000);
 
 let world = new THREE.Group();
 const ws = 0.03;
-world.scale.set(ws,ws,ws)
+world.scale.set(ws, ws, ws);
 
 const camera = new THREE.PerspectiveCamera(
     convertFov(90, window.innerWidth, window.innerHeight),
