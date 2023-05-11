@@ -367,6 +367,9 @@ loader.load("collision.gltf", (gltf) => {
             if (child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
+                child.material = new THREE.MeshLambertMaterial({
+                    color: 0xd8d6ef,
+                });
             }
         });
 
