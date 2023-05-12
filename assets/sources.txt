@@ -3,3 +3,5 @@ cosiDino.jpg: https://www.experiencecolumbus.com/listing/cosi/5658/
 cosiSkinwalker: https://www.fmsp.com/projects/center-of-science-and-industry-cosi/
 cosiOutside: https://gypsyroadtrip.com/tag/cosi/
 costStatue: https://whatshouldwedotodaycolumbus.com/cosi-science-museum-columbus-ohio/
+otherworld: https://time.com/collection/worlds-coolest-places-2019/5736011/otherworld-columbus-ohio/
+columbusMuseum: https://en.wikipedia.org/wiki/Columbus_Museum_of_Art
