@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1361"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="icon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1363"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="4.6823232"
+     inkscape:cx="62.041851"
+     inkscape:cy="21.356919"
+     inkscape:window-width="1440"
+     inkscape:window-height="837"
+     inkscape:window-x="1432"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1358">
+    <rect
+       x="89.401605"
+       y="241.62596"
+       width="867.06073"
+       height="661.40636"
+       id="rect1490" />
+    <rect
+       x="75.176356"
+       y="422.01273"
+       width="625.3306"
+       height="177.68957"
+       id="rect1484" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0"
+       id="rect2849"
+       width="16.073442"
+       height="16.073442"
+       x="-2.735261e-07"
+       y="-2.735261e-07" />
+    <g
+       aria-label="C"
+       id="text2847"
+       style="font-size:16.9333px;font-family:Elephant;-inkscape-font-specification:Elephant;text-align:center;text-anchor:middle;fill:#000000;stroke:#000000;stroke-width:0;fill-opacity:1"
+       inkscape:export-filename="..\..\..\icon.png"
+       inkscape:export-xdpi="180"
+       inkscape:export-ydpi="180">
+      <path
+         d="m 8.6547862,14.403642 q -2.9125276,0 -4.7921239,-1.79493 -1.862663,-1.811863 -1.862663,-4.5719909 0,-2.8278611 1.8457297,-4.5889243 1.862663,-1.7779965 4.7921239,-1.7779965 1.2530642,0 2.1674621,0.4233325 l 1.79493,1.015998 q 0.507999,0 0.677332,-0.338666 0.169333,-0.3555993 0.237066,-0.9990647 h 0.338666 V 7.1223229 H 13.565443 Q 12.820378,5.0564603 12.498645,4.3283284 12.193846,3.6001965 11.465714,2.9228645 10.737582,2.2455325 9.603051,2.2455325 q -1.4731971,0 -2.1843957,1.6594634 -0.7111986,1.6594634 -0.7111986,3.8777257 0,2.3875954 0.846665,4.1486584 0.8635983,1.74413 2.5230613,1.74413 1.540931,0 2.472262,-1.117598 0.931332,-1.117598 1.236131,-2.9125274 l 0.287866,0.0508 q -0.237066,2.0319965 -1.54093,3.3697265 -1.303864,1.337731 -3.8777258,1.337731 z"
+         style="fill:#000000;fill-opacity:1"
+         id="path3009" />
+    </g>
+  </g>
+</svg>
