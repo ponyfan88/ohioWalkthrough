@@ -14,8 +14,8 @@ import { Capsule } from "three/addons/math/Capsule.js";
 const clock = new THREE.Clock();
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xffffff);
-scene.fog = new THREE.Fog(0xffffff, 0, 2000);
+scene.background = new THREE.Color(0x606060);
+scene.fog = new THREE.Fog(0xffffff, 0, 10);
 
 let world = new THREE.Group();
 const ws = 0.03;
@@ -42,7 +42,7 @@ scene.add(dirLight);
 
 dirLight.shadow.mapSize.width = 4096;
 dirLight.shadow.mapSize.height = 4096;
-dirLight.shadow.camera.far = 3000;
+dirLight.shadow.camera.far = 10;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -66,10 +66,9 @@ const playerVelocity = new THREE.Vector3();
 const playerDirection = new THREE.Vector3();
 
 let playerOnFloor = false;
-let mouseTime = 0;
 
-let uniquePaintings = {};
 let rotatingSigns = []; // signs to rotate constantly
+let floatingSigns = []; // signs to rotate constantly
 
 let instructions = document.querySelector("#instructions");
 
@@ -368,12 +367,11 @@ loader.load("collision.gltf", (gltf) => {
                 child.castShadow = false;
                 child.receiveShadow = false;
                 child.material = new THREE.MeshLambertMaterial({
-                    color: 0xff00ff,
+                    color: 0xf0f0f0,
                     side: 2,
                     shading: THREE.FlatShading,
-                    transparent: true,
-                    opacity: 1,
-                    depthWrite: false
+                    transparent: false,
+                    opacity: 1
                 });
             }
         });
@@ -405,6 +403,17 @@ function addPaintings() {
 
         if (paintingJSON.type == "rotating-sign") {
             rotatingSigns.push(painting);
+        }
+
+        if (paintingJSON.type == "floating-sign") {
+            floatingSigns.push(
+                {
+                    "painting" : painting,
+                    "startingY" : paintingJSON.pos.y,
+                    "floatFrequency": paintingJSON.data.floatFrequency,
+                    "floatAmount": paintingJSON.data.floatAmount,
+                }
+            )
         }
     });
 
@@ -456,6 +465,10 @@ function animate() {
 
         rotatingSigns.forEach((element) => {
             element.rotation.y += element.userData.data.rotationAmount;
+        });
+
+        floatingSigns.forEach((element) => {
+            element.painting.position.y = element.startingY + Math.sin(performance.now() / 180 * element.floatFrequency) * element.floatAmount
         });
 
         crosshair.classList = "enabled";
