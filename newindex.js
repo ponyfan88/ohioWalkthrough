@@ -15,7 +15,7 @@ const clock = new THREE.Clock();
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x606060);
-scene.fog = new THREE.Fog(0xffffff, 0, 10);
+scene.fog = new THREE.Fog(0x606060, 10, 20);
 
 let world = new THREE.Group();
 const ws = 0.03;
