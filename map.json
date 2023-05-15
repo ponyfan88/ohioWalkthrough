@@ -2,12 +2,12 @@
     "paintings": [
         {
             "id": "",
-            "pos": { "x": 0, "y": 60, "z": -100 },
+            "pos": { "x": 0, "y": 30, "z": -198 },
             "side": 4,
-            "texture": "signs/my-awesome-label.png",
-            "size": { "x": "87.368421", "y": 10, "z": 0.1 },
+            "texture": "signs/title.png",
+            "size": { "x": "40", "y": "8.11111111111", "z": 0.1 },
             "transparent": true,
-            "pixelated": true,
+            "pixelated": false,
             "doublesided": true,
             "type": "rotating-sign",
             "data": {
@@ -16,94 +16,10 @@
         },
         {
             "id": "",
-            "pos": { "x": -30, "y": 30, "z": -100 },
-            "side": 0,
-            "texture": "paintings/default.png",
-            "size": 20,
-            "transparent": false,
-            "pixelated": false,
-            "doublesided": false,
-            "type": "painting-clickable",
-            "data": {
-                "description": "this is a pretty epic test"
-            }
-        },
-        {
-            "id": "",
-            "pos": { "x": 30, "y": 30, "z": -100 },
-            "side": 1,
-            "texture": "paintings/default.png",
-            "size": 20,
-            "transparent": false,
-            "pixelated": false,
-            "doublesided": false,
-            "type": "painting-clickable",
-            "data": {
-                "description": "this is a pretty epic test"
-            }
-        },
-        {
-            "id": "",
-            "pos": { "x": -30, "y": 30, "z": -150 },
-            "side": 0,
-            "texture": "paintings/default.png",
-            "size": 20,
-            "transparent": false,
-            "pixelated": false,
-            "doublesided": false,
-            "type": "painting-clickable",
-            "data": {
-                "description": "this is a pretty epic test"
-            }
-        },
-        {
-            "id": "",
-            "pos": { "x": 30, "y": 30, "z": -150 },
-            "side": 1,
-            "texture": "paintings/default.png",
-            "size": 20,
-            "transparent": false,
-            "pixelated": false,
-            "doublesided": false,
-            "type": "painting-clickable",
-            "data": {
-                "description": "this is a pretty epic test"
-            }
-        },
-        {
-            "id": "",
-            "pos": { "x": -30, "y": 30, "z": -200 },
-            "side": 0,
-            "texture": "paintings/default.png",
-            "size": 20,
-            "transparent": false,
-            "pixelated": false,
-            "doublesided": false,
-            "type": "painting-clickable",
-            "data": {
-                "description": "this is a pretty epic test"
-            }
-        },
-        {
-            "id": "",
-            "pos": { "x": 30, "y": 30, "z": -200 },
-            "side": 1,
-            "texture": "paintings/default.png",
-            "size": 20,
-            "transparent": false,
-            "pixelated": false,
-            "doublesided": false,
-            "type": "painting-clickable",
-            "data": {
-                "description": "this is a pretty epic test"
-            }
-        },
-        {
-            "id": "",
             "pos": { "x": 194, "y": 35, "z": -281.99 },
-            "side": 4,
+            "side": 1,
             "texture": "../anmol.jpg",
-            "size": { "x": 41.7, "y": 30, "z": 0.1 },
+            "size": { "x": 0, "y": 0, "z": 0 },
             "transparent": false,
             "pixelated": false,
             "doublesided": false,
@@ -153,41 +69,36 @@
             "data": {
                 "description": "The Columbus Museum of Art has works of art spanning the late nineteenth"
             }
-        }
-
-    ],
-    "blocks": [
-        {
-            "id": "",
-            "pos": { "x": -30, "y": 30, "z": -100 },
-            "size": { "x": "87.368421", "y": 10, "z": 0.1 },
-            "collisions": true
-        }
-    ],
-    "planes": [
-        {
-            "pos": { "x": 0, "y": 0, "z": -300 },
-            "plane": [100, 700, 100, 100]
-        }
-    ],
-    "walls": [
-        {
-            "id": "",
-            "pos": { "x": 0, "y": 0, "z": 50 },
-            "size": { "x": 100, "y": 5, "z": 10 },
-            "collisions": true
         },
         {
             "id": "",
-            "pos": { "x": 50, "y": 0, "z": 0 },
-            "size": { "x": "10", "y": 5, "z": 100 },
-            "collisions": true
+            "pos": { "x": 0, "y": 30, "z": -330 },
+            "side": 4,
+            "texture": "signs/first.png",
+            "size": 40,
+            "transparent": true,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "floating-sign",
+            "data": {
+                "floatFrequency": 1,
+                "floatAmount": 5
+            }
         },
         {
             "id": "",
-            "pos": { "x": -50, "y": 0, "z": 0 },
-            "size": { "x": 10, "y": 5, "z": 100 },
-            "collisions": true
+            "pos": { "x": 0, "y": 30, "z": -530 },
+            "side": 4,
+            "texture": "signs/first.png",
+            "size": 40,
+            "transparent": true,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "floating-sign",
+            "data": {
+                "floatFrequency": 1,
+                "floatAmount": 5
+            }
         }
     ]
 }
