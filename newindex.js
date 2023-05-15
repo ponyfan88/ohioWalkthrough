@@ -348,7 +348,7 @@ loader.load("collision.gltf", (gltf) => {
             child.material = new THREE.MeshLambertMaterial({
                 color: 0x0000ff,
                 transparent: true,
-                opacity: 0.1,
+                opacity: 0,
                 depthWrite: false
             });
         }
