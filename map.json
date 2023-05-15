@@ -16,10 +16,10 @@
         },
         {
             "id": "",
-            "pos": { "x": 0, "y": 500, "z": 300 },
-            "side": 5,
+            "pos": { "x": 194, "y": 35, "z": -281.99 },
+            "side": 1,
             "texture": "../anmol.jpg",
-            "size": { "x": 0, "y": 1500, "z": 0.1 },
+            "size": { "x": 0, "y": 0, "z": 0 },
             "transparent": false,
             "pixelated": false,
             "doublesided": false,
@@ -30,7 +30,7 @@
         },
         {
             "id": "",
-            "pos": { "x": 105, "y": 30, "z": -282 },
+            "pos": { "x": 105, "y": 35, "z": -282 },
             "side": 5,
             "texture": "../cosiExt.jpg",
             "size": { "x": 40.2, "y": 30, "z": 0.1 },
@@ -44,7 +44,7 @@
         },
         {
             "id": "",
-            "pos": { "x": 149, "y": 30, "z": -282 },
+            "pos": { "x": 149, "y": 35, "z": -282 },
             "side": 5,
             "texture": "../otherworld.jpg",
             "size": { "x": 45, "y": 30, "z": 0.1 },
@@ -53,12 +53,12 @@
             "doublesided": false,
             "type": "painting-clickable",
             "data": {
-                "description": "Otherworld"
+                "description": "Otherworld is an interactive art museum in Columbus with many things to do such as a theater, escape room, haunted house, and much more.  For more information, please visit otherworld.com"
             }
         },
         {
             "id": "",
-            "pos": { "x": 194, "y": 30, "z": -282 },
+            "pos": { "x": 194, "y": 35, "z": -282 },
             "side": 5,
             "texture": "../columbusMuseum.jpg",
             "size": { "x": 41.7, "y": 30, "z": 0.1 },
@@ -67,7 +67,7 @@
             "doublesided": false,
             "type": "painting-clickable",
             "data": {
-                "description": "The Columbus Museum of Art"
+                "description": "The Columbus Museum of Art has works of art spanning the late nineteenth"
             }
         },
         {
