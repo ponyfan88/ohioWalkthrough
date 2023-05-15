@@ -100,86 +100,58 @@
         },
         {
             "id": "",
-            "pos": { "x": 80, "y": 30, "z": -250},
-            "side": 1,
-            "texture": "../cosiDino.jpg",
-            "size": { "x": 0.1, "y": 60, "z": 90},
-            "transparent": false,
-            "pixelated": false,
-            "doublesided": false,
-            "type": "painting-clickable",
-            "data": {
-                "description": "beware"
-            }
-        },
-        {
-            "id": "",
-            "pos": { "x": -60, "y": 30, "z": -425},
-            "side": 0,
-            "texture": "../cosiExt.jpg",
-            "size": { "x": 0.1, "y": 40, "z": 53.2},
-            "transparent": false,
-            "pixelated": false,
-            "doublesided": false,
-            "type": "painting-clickable",
-            "data": {
-                "description": "birb"
-            }
-        },
-        {
-            "id": "",
-            "pos": { "x": 60, "y": 30, "z": -325},
-            "side": 1,
-            "texture": "../cosiOutside.jpg",
-            "size": { "x": 0.1, "y": 20, "z": 28.6},
-            "transparent": false,
-            "pixelated": false,
-            "doublesided": false,
-            "type": "painting-clickable",
-            "data": {
-                "description": "the outside of the building"
-            }
-        },
-        {
-            "id": "",
-            "pos": { "x": -70, "y": 30, "z": -300},
-            "side": 0,
-            "texture": "../cosiSkinwalker.jpg",
-            "size": { "x": 0.1, "y": 80, "z": 146.4},
-            "transparent": false,
-            "pixelated": false,
-            "doublesided": false,
-            "type": "painting-clickable",
-            "data": {
-                "description": "there are no skinwalkers in this image"
-            }
-        },
-        {
-            "id": "",
-            "pos": { "x": 150, "y": 30, "z": -425},
-            "side": 1,
-            "texture": "../cosiStatue.jpg",
-            "size": { "x": 0.1, "y": 200, "z": 150},
-            "transparent": false,
-            "pixelated": false,
-            "doublesided": false,
-            "type": "painting-clickable",
-            "data": {
-                "description": "erf"
-            }
-        },
-        {
-            "id": "",
-            "pos": { "x": 0, "y": 300, "z": -425},
-            "side": 4,
+            "pos": { "x": 0, "y": 500, "z": 300 },
+            "side": 5,
             "texture": "../anmol.jpg",
-            "size": { "x": 200, "y": 150, "z": 0.1},
+            "size": { "x": 100, "y": 1500, "z": 0.1 },
             "transparent": false,
             "pixelated": false,
             "doublesided": false,
             "type": "painting-clickable",
             "data": {
                 "description": "world famous celebrity almno"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": 105, "y": 30, "z": -282 },
+            "side": 5,
+            "texture": "../cosiExt.jpg",
+            "size": { "x": 40.2, "y": 30, "z": 0.1 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "COSI, also known as the Center of Science and Industry, is a museum in Columbus.  COSI is known for giving people of all kinds hands on experience in STEM topics.  For more information, please visit cosi.org"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": 149, "y": 30, "z": -282 },
+            "side": 5,
+            "texture": "../otherworld.jpg",
+            "size": { "x": 45, "y": 30, "z": 0.1 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "Otherworld"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": 194, "y": 30, "z": -282 },
+            "side": 5,
+            "texture": "../columbusMuseum.jpg",
+            "size": { "x": 41.7, "y": 30, "z": 0.1 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "The Columbus Museum of Art"
             }
         }
 
