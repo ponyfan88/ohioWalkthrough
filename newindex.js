@@ -364,8 +364,8 @@ loader.load("collision.gltf", (gltf) => {
 
         gltf.scene.traverse((child) => {
             if (child.isMesh) {
-                child.castShadow = false;
-                child.receiveShadow = false;
+                child.castShadow = true;
+                child.receiveShadow = true;
                 child.material = new THREE.MeshLambertMaterial({
                     color: 0xf0f0f0,
                     side: 2,
@@ -471,8 +471,6 @@ function animate() {
             element.painting.position.y = element.startingY + Math.sin(performance.now() / 180 * element.floatFrequency) * element.floatAmount
         });
 
-        crosshair.classList = "enabled";
-
         audioPlayer.volume = 1; // unmute audio player
 
         raycaster.set(
@@ -489,11 +487,17 @@ function animate() {
                 description.innerText =
                     intersect.object.userData.data.description;
                 description.classList = "enabled";
+
+                crosshair.classList = "enabled";
             } else {
                 description.classList = "";
+
+                crosshair.classList = "";
             }
         } else {
             description.classList = "";
+
+            crosshair.classList = "";
         }
 
         renderer.render(scene, camera);

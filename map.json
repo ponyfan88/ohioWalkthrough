@@ -67,7 +67,21 @@
             "doublesided": false,
             "type": "painting-clickable",
             "data": {
-                "description": "The Columbus Museum of Art has works of art spanning the late nineteenth and early 20th century from modern American and European artists.  There are also large collections of works by local artists.  For more information visit columbusmuseum.org"
+                "description": "unlike this museum, the REAL Columbus Museum of Art has works of art spanning the late nineteenth century to modern times."
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": -194, "y": 35, "z": -282 },
+            "side": 5,
+            "texture": "paintings/haus.png",
+            "size": { "x": 41.7, "y": 30, "z": 0.1 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "Schmidt's has been serving central Ohio for five generations first back in the mid-1800's out of their packing house on the south side of Columbus and today celebrate with Schmidt's at the landmark German Village Sausage Haus or at one of Schmidt's Sausage Trucks. Schmidt's also caters and has a beautiful banquet haus above the historic restaurant in German Village. When you stop down to the Sausage Haus don't forget to say \"guten Tag\" to one of the Schmidt 5th generation; Kyle, Matt and Drew."
             }
         },
         {
@@ -145,7 +159,7 @@
             "id": "",
             "pos": { "x": 0, "y": 30, "z": -530 },
             "side": 4,
-            "texture": "signs/first.png",
+            "texture": "signs/second.png",
             "size": 40,
             "transparent": true,
             "pixelated": false,
