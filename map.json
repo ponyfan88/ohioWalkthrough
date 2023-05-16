@@ -89,7 +89,7 @@
             "id": "",
             "pos": { "x": 0, "y": 30, "z": -530 },
             "side": 4,
-            "texture": "signs/first.png",
+            "texture": "signs/second.png",
             "size": 40,
             "transparent": true,
             "pixelated": false,
