@@ -39,7 +39,7 @@
             "doublesided": false,
             "type": "painting-clickable",
             "data": {
-                "description": "COSI, also known as the Center of Science and Industry, is a museum in Columbus.  COSI is known for giving people of all kinds hands on experience in STEM topics.  For more information, please visit cosi.org"
+                "description": "COSI, also known as the Center of Science and Industry, is a museum in Columbus.  COSI is known for giving people of all kinds hands on experience in STEM topics.  For more information visit cosi.org"
             }
         },
         {
@@ -53,7 +53,7 @@
             "doublesided": false,
             "type": "painting-clickable",
             "data": {
-                "description": "Otherworld is an interactive art museum in Columbus with many things to do such as a theater, escape room, haunted house, and much more.  For more information, please visit otherworld.com"
+                "description": "Otherworld is an interactive art museum in Columbus with many things to do such as a theater, escape room, haunted house, and much more.  For more information visit otherworld.com"
             }
         },
         {
@@ -67,7 +67,63 @@
             "doublesided": false,
             "type": "painting-clickable",
             "data": {
-                "description": "The Columbus Museum of Art has works of art spanning the late nineteenth"
+                "description": "The Columbus Museum of Art has works of art spanning the late nineteenth and early 20th century from modern American and European artists.  There are also large collections of works by local artists.  For more information visit columbusmuseum.org"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": 215, "y": 35, "z": -331.5 },
+            "side": 1,
+            "texture": "../nationwideArena.jpg",
+            "size": { "x": 0.1, "y": 30, "z": 45 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "Nationwide Arena is a multi-purpose arena in Columbus.  On top of being the home of the Columbus Blue Jackets, it also houses many other events such as the Arnold Classic.  For more information visit nationwidearena.com"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": 194, "y": 35, "z": -382 },
+            "side": 4,
+            "texture": "../columbusZoo.jpg",
+            "size": { "x": 45, "y": 30, "z": 0.1 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": ""
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": 145.5, "y": 35, "z": -382 },
+            "side": 4,
+            "texture": "../legoland.jpg",
+            "size": { "x": 48.6, "y": 30, "z": 0.1 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": ""
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": 97, "y": 35, "z": -382 },
+            "side": 4,
+            "texture": "../franklinParkConservatory.jpg",
+            "size": { "x": 45, "y": 30, "z": 0.1 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": ""
             }
         },
         {
