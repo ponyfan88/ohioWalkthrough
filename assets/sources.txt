@@ -5,3 +5,5 @@ nationwideArena: https://en.wikipedia.org/wiki/Nationwide_Arena
 columbusZoo: https://www.tripadvisor.com/Attraction_Review-g50870-d110229-Reviews-Columbus_Zoo_and_Aquarium-Powell_Ohio.html
 legoland.jpg: https://www.experiencecolumbus.com/things-to-do/attractions/legoland-discovery-center/
 franklinParkConservatory.jpg: https://www.tripadvisor.com/Attraction_Review-g50226-d269061-Reviews-Franklin_Park_Conservatory_and_Botanical_Gardens-Columbus_Ohio.html
+haus.png: https://www.yelp.com/biz_photos/schmidts-sausage-haus-columbus-5?select=e9_gKmoGN-mhPPtZEI5R_Q
+hot chicken takeover.jpg: https://hotchickentakeover.com/our-story/
