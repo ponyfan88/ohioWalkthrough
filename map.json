@@ -100,7 +100,7 @@
         },
         {
             "id": "",
-            "pos": { "x": 194, "y": 35, "z": -382 },
+            "pos": { "x": 194, "y": 35, "z": -381.5 },
             "side": 4,
             "texture": "paintings/columbusZoo.jpg",
             "size": { "x": 45, "y": 30, "z": 0.1 },
@@ -114,7 +114,7 @@
         },
         {
             "id": "",
-            "pos": { "x": 145.5, "y": 35, "z": -382 },
+            "pos": { "x": 145.5, "y": 35, "z": -381.5 },
             "side": 4,
             "texture": "paintings/legoland.jpg",
             "size": { "x": 48.6, "y": 30, "z": 0.1 },
@@ -128,9 +128,37 @@
         },
         {
             "id": "",
-            "pos": { "x": 97, "y": 35, "z": -382 },
+            "pos": { "x": 97, "y": 35, "z": -381.5 },
             "side": 4,
             "texture": "paintings/franklinParkConservatory.jpg",
+            "size": { "x": 45, "y": 30, "z": 0.1 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "Franklin Park Conservatory and Botanical Gardens is a botanical garden just two miles from downtown Columbus.  It spans 13 acres and is made up of the conservatory building, the Scotts Miracle-Gro Foundation Children's Garaden and the Grand Mallway.  You can expect to see botanical biomes, lush gardens, art exhibitions and more.  For more information, visit fpconservatory.org"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": 105, "y": 35, "z": -480 },
+            "side": 5,
+            "texture": "paintings/hilton.jpg",
+            "size": { "x": 45, "y": 30, "z": 0.1 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": ""
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": 151.5, "y": 35, "z": -480 },
+            "side": 5,
+            "texture": "paintings/joseph.jpg",
             "size": { "x": 45, "y": 30, "z": 0.1 },
             "transparent": false,
             "pixelated": false,
