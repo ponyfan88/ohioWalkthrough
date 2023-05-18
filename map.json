@@ -5,7 +5,7 @@
             "pos": { "x": 0, "y": 30, "z": -198 },
             "side": 4,
             "texture": "signs/title.png",
-            "size": { "x": "40", "y": "8.11111111111", "z": 0.1 },
+            "size": { "x": "40", "y": "13.875476493", "z": 0.1 },
             "transparent": true,
             "pixelated": false,
             "doublesided": true,
