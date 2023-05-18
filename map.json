@@ -5,7 +5,7 @@
             "pos": { "x": 0, "y": 30, "z": -198 },
             "side": 4,
             "texture": "signs/title.png",
-            "size": { "x": "40", "y": "8.11111111111", "z": 0.1 },
+            "size": { "x": "40", "y": "13.875476493", "z": 0.1 },
             "transparent": true,
             "pixelated": false,
             "doublesided": true,
@@ -82,6 +82,48 @@
             "type": "painting-clickable",
             "data": {
                 "description": "Schmidt's has been serving central Ohio for five generations first back in the mid-1800's out of their packing house on the south side of Columbus and today celebrate with Schmidt's at the landmark German Village Sausage Haus or at one of Schmidt's Sausage Trucks. Schmidt's also caters and has a beautiful banquet haus above the historic restaurant in German Village. When you stop down to the Sausage Haus don't forget to say \"guten Tag\" to one of the Schmidt 5th generation; Kyle, Matt and Drew."
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": -149, "y": 35, "z": -282 },
+            "side": 5,
+            "texture": "paintings/hot chicken takeover.jpg",
+            "size": { "x": 36.3, "y": 30, "z": 0.1 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": ""
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": -100, "y": 35, "z": -282 },
+            "side": 5,
+            "texture": "paintings/brassica.jpg",
+            "size": { "x": 36.3, "y": 30, "z": 0.1 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": ""
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": -215, "y": 35, "z": -331.5 },
+            "side": 0,
+            "texture": "paintings/northstar.jpg",
+            "size": { "x": 0.1, "y": 30, "z": 36.3 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": ""
             }
         },
         {

@@ -7,3 +7,5 @@ legoland.jpg: https://www.experiencecolumbus.com/things-to-do/attractions/legola
 franklinParkConservatory.jpg: https://www.tripadvisor.com/Attraction_Review-g50226-d269061-Reviews-Franklin_Park_Conservatory_and_Botanical_Gardens-Columbus_Ohio.html
 hilton: https://www.experiencecolumbus.com/listing/hilton-columbus-downtown/9257/
 joseph.jpg: https://www.pizzuti.com/projects/le-meridien-columbus-the-joseph
+haus.png: https://www.yelp.com/biz_photos/schmidts-sausage-haus-columbus-5?select=e9_gKmoGN-mhPPtZEI5R_Q
+hot chicken takeover.jpg: https://hotchickentakeover.com/our-story/
