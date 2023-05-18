@@ -114,6 +114,20 @@
         },
         {
             "id": "",
+            "pos": { "x": -215, "y": 35, "z": -331.5 },
+            "side": 0,
+            "texture": "paintings/northstar.jpg",
+            "size": { "x": 0.1, "y": 30, "z": 36.3 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": ""
+            }
+        },
+        {
+            "id": "",
             "pos": { "x": 215, "y": 35, "z": -331.5 },
             "side": 1,
             "texture": "paintings/nationwideArena.jpg",
