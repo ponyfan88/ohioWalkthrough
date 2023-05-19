@@ -1,3 +1,4 @@
+Attractions:
 cosiExt.jpg: https://www.google.com/url?sa=i&url=https%3A%2F%2Fcosi.org%2F&psig=AOvVaw16GrM0KnJa9vmoAG7ugLpZ&ust=1683725612747000&source=images&cd=vfe&ved=0CAQQjB1qFwoTCMjYwPCs6P4CFQAAAAAdAAAAABBP
 otherworld: https://time.com/collection/worlds-coolest-places-2019/5736011/otherworld-columbus-ohio/
 columbusMuseum: https://en.wikipedia.org/wiki/Columbus_Museum_of_Art
@@ -5,7 +6,11 @@ nationwideArena: https://en.wikipedia.org/wiki/Nationwide_Arena
 columbusZoo: https://www.tripadvisor.com/Attraction_Review-g50870-d110229-Reviews-Columbus_Zoo_and_Aquarium-Powell_Ohio.html
 legoland.jpg: https://www.experiencecolumbus.com/things-to-do/attractions/legoland-discovery-center/
 franklinParkConservatory.jpg: https://www.tripadvisor.com/Attraction_Review-g50226-d269061-Reviews-Franklin_Park_Conservatory_and_Botanical_Gardens-Columbus_Ohio.html
-hilton: https://www.experiencecolumbus.com/listing/hilton-columbus-downtown/9257/
+Hotels:
+hilton.jpg: https://www.experiencecolumbus.com/listing/hilton-columbus-downtown/9257/
 joseph.jpg: https://www.pizzuti.com/projects/le-meridien-columbus-the-joseph
+sonesta.jpg: https://www.sonesta.com/sonesta-hotels-resorts/oh/columbus/sonesta-columbus-downtown
+sheraton.jpg: https://www.hotel-online.com/tag/sheraton-columbus-hotel-at-capitol-square/
+Food:
 haus.png: https://www.yelp.com/biz_photos/schmidts-sausage-haus-columbus-5?select=e9_gKmoGN-mhPPtZEI5R_Q
 hot chicken takeover.jpg: https://hotchickentakeover.com/our-story/
