@@ -385,10 +385,18 @@ loader.load("collision.gltf", (gltf) => {
 
     loader.load("scene.gltf", function (gltf) {
         const model = gltf.scene;
-        model.scale.set(0.0025, 0.0025, 0.0025);
         model.position.setX(3);
-        model.position.setY(0.5);
-        model.position.setZ(-15.9);
+        model.position.setY(0);
+        model.position.setZ(-19.75);
+        model.rotation.y += 1.57;
+        scene.add(model);
+    })
+
+    loader.load("scene.gltf", function (gltf) {
+        const model = gltf.scene;
+        model.position.setX(-5.5);
+        model.position.setY(0);
+        model.position.setZ(-19.75);
         model.rotation.y += 1.57;
         scene.add(model);
     })

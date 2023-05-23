@@ -1,11 +1,11 @@
 Model Information:
-* title:	Open book
-* source:	https://sketchfab.com/3d-models/open-book-45c747852c874013b00a304f1fa545fc
-* author:	Kass & Deku (https://sketchfab.com/Paul.Briot)
+* title:	Open Book
+* source:	https://sketchfab.com/3d-models/open-book-cd8df095f5db4fa38fe7d8799822cfc3
+* author:	Inuciian (https://sketchfab.com/Inuciian)
 
 Model License:
 * license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
 * requirements:	Author must be credited. Commercial use is allowed.
 
 If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
-This work is based on "Open book" (https://sketchfab.com/3d-models/open-book-45c747852c874013b00a304f1fa545fc) by Kass & Deku (https://sketchfab.com/Paul.Briot) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+This work is based on "Open Book" (https://sketchfab.com/3d-models/open-book-cd8df095f5db4fa38fe7d8799822cfc3) by Inuciian (https://sketchfab.com/Inuciian) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
