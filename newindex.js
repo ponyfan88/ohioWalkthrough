@@ -397,28 +397,20 @@ loader.load("collision.gltf", (gltf) => {
 
     loader.load("scene.gltf", function (gltf) {
         const model = gltf.scene;
-        model.position.setX(100);
+        model.position.setX(3);
         model.position.setY(0);
-        model.position.setZ(-659);
+        model.position.setZ(-19.75);
         model.rotation.y += 1.57;
-
-        const model_scale = 100 / 3
-        model.scale.set(model_scale,model_scale,model_scale)
-
-        world.add(model);
+        scene.add(model);
     })
 
     loader.load("scene.gltf", function (gltf) {
         const model = gltf.scene;
-        model.position.setX(-180);
+        model.position.setX(-5.5);
         model.position.setY(0);
-        model.position.setZ(-659);
+        model.position.setZ(-19.75);
         model.rotation.y += 1.57;
-
-        const model_scale = 100 / 3
-        model.scale.set(model_scale,model_scale,model_scale)
-
-        world.add(model);
+        scene.add(model);
     })
 });
 
