@@ -18,7 +18,7 @@ scene.background = new THREE.Color(0x606060);
 scene.fog = new THREE.Fog(0x606060, 10, 20);
 
 let world = new THREE.Group();
-const ws = 0.03;
+const ws = 0.03; // the paintings are made large, so we downscale them to 3% their size.
 world.scale.set(ws, ws, ws);
 
 const camera = new THREE.PerspectiveCamera(
@@ -27,6 +27,7 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     1000
 );
+// determines what way is up
 camera.rotation.order = "YXZ";
 
 let light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
@@ -65,8 +66,6 @@ const playerCollider = new Capsule(
 const playerVelocity = new THREE.Vector3();
 const playerDirection = new THREE.Vector3();
 
-let playerOnFloor = false;
-
 let rotatingSigns = []; // signs to rotate constantly
 let floatingSigns = []; // signs to rotate constantly
 
@@ -86,6 +85,7 @@ let songs = [];
 
 setupAudio();
 
+// sets up audio and events for music changing
 function setupAudio() {
     scrambleMusic();
 
@@ -104,6 +104,7 @@ function setupAudio() {
     });
 }
 
+// makes a new playlist
 function scrambleMusic() {
     sourceSongs = [...musicData.songs];
     songIndex = -1;
@@ -118,9 +119,10 @@ function scrambleMusic() {
     }
 }
 
+// when we click previous song, go back a song
 document.getElementById("previous-button").onclick = function () {
     console.log(songIndex);
-    if (songIndex <= 0) {
+    if (songIndex <= 0) { // if we are at the first song, make a NEW playlist.
         audioPlayer.pause();
         audioPlayer.currentTime = 0;
         scrambleMusic();
@@ -139,11 +141,12 @@ document.getElementById("previous-button").onclick = function () {
     songChanged();
 };
 
+// when we click next, skip the current song
 document.getElementById("next-button").onclick = function () {
     console.log(songIndex);
     console.log(musicData.songs.length);
 
-    if (songIndex == musicData.songs.length - 1) {
+    if (songIndex == musicData.songs.length - 1) { // if we've reached the end of our playlist, shuffle us a new one
         console.log("reached end of songs. resetting!");
         audioPlayer.pause();
         audioPlayer.currentTime = 0;
@@ -165,6 +168,7 @@ document.getElementById("next-button").onclick = function () {
 
 let audioPaused = false;
 
+// pause the music when we click the pause button
 document.getElementById("pause-button").onclick = function () {
     if (audioPaused) {
         audioPlayer.play();
@@ -181,12 +185,14 @@ document.getElementById("pause-button").onclick = function () {
     songChanged();
 };
 
+// update the buttons and song name to reflect current song
 function songChanged() {
     songTitle.innerText = shownSongs[songIndex];
     buttonAdjacentBox.innerText =
         songIndex + 1 + "/" + musicData.songs.length + "\u00A0";
 }
 
+// when we click the controls box on the main page, request a pointer lock
 document.getElementById("instructions").onclick = function () {
     document.body.requestPointerLock();
 };
@@ -197,6 +203,7 @@ document.addEventListener("mozpointerlockchange", pointerLockChanged, false);
 let interacted = false;
 let controlsEnabled = false;
 
+// makes our pointer dissapear! also initializes the whole audio system and everything.
 function pointerLockChanged() {
     if (
         document.pointerLockElement === document.body ||
@@ -232,14 +239,17 @@ const vector1 = new THREE.Vector3();
 const vector2 = new THREE.Vector3();
 const vector3 = new THREE.Vector3();
 
+// self-explanitory
 document.addEventListener("keydown", (event) => {
     keyStates[event.code] = true;
 });
 
+// self-explanitory
 document.addEventListener("keyup", (event) => {
     keyStates[event.code] = false;
 });
 
+// self-explanitory
 document.body.addEventListener("mousemove", (event) => {
     if (document.pointerLockElement === document.body) {
         camera.rotation.y -= event.movementX / 500;
@@ -249,6 +259,8 @@ document.body.addEventListener("mousemove", (event) => {
 
 window.addEventListener("resize", onWindowResize);
 
+// function that changes camera FOV and renderer resolution on screen change.
+// this is why we made convertFov()
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -257,25 +269,16 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+// does player collisions.
 function playerCollisions() {
     const result = worldOctree.capsuleIntersect(playerCollider);
 
-    playerOnFloor = false;
-
-    if (result) {
-        playerOnFloor = result.normal.y > 0;
-
-        if (!playerOnFloor) {
-            playerVelocity.addScaledVector(
-                result.normal,
-                -result.normal.dot(playerVelocity)
-            );
-        }
-
+    if (result) { //if we've collided, move back accordingly
         playerCollider.translate(result.normal.multiplyScalar(result.depth));
     }
 }
 
+// update the player position, does all the friction work and moves the camera.
 function updatePlayer(deltaTime) {
     let damping = Math.exp(-10 * deltaTime) - 1;
 
@@ -289,6 +292,7 @@ function updatePlayer(deltaTime) {
     camera.position.copy(playerCollider.end);
 }
 
+// same thing as below without cross product
 function getForwardVector() {
     camera.getWorldDirection(playerDirection);
     playerDirection.y = 0;
@@ -297,6 +301,7 @@ function getForwardVector() {
     return playerDirection;
 }
 
+// gets a much better player direction. the player direction is normally all jumbled, but you can use trig (or threejs functions) to un-jumble it.
 function getSideVector() {
     camera.getWorldDirection(playerDirection);
     playerDirection.y = 0;
@@ -306,6 +311,10 @@ function getSideVector() {
     return playerDirection;
 }
 
+// gets key states and adds player velocity based on them 
+// (w - go forward)
+// (a - go left)
+// etc etc
 function controls(deltaTime) {
     // gives a bit of air control
     let speedDelta = deltaTime * 25;
@@ -333,6 +342,8 @@ function controls(deltaTime) {
 
 const loader = new GLTFLoader().setPath("assets/3d/");
 
+// there are two different models, one for collisions and one for the room we display.
+// this loads both of them
 loader.load("collision.gltf", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
 
@@ -357,6 +368,7 @@ loader.load("collision.gltf", (gltf) => {
     helper.visible = false;
     scene.add(helper);
 
+    // once we load the collisions, load the visuals
     loader.load("room.gltf", (gltf) => {
         gltf.scene.rotation.y = Math.PI;
 
@@ -394,6 +406,7 @@ loader.load("collision.gltf", (gltf) => {
     })
 });
 
+// adds paitings to scene. these are the pictures. reads from JSON.
 function addPaintings() {
     // instantialize loop variables
     let painting;
@@ -432,6 +445,8 @@ function addPaintings() {
     animate();
 }
 
+
+//teleports the player if the camera falls (Out Of Bounds)
 function teleportPlayerIfOob() {
     if (camera.position.y <= -25) {
         playerCollider.start.set(0, 0.35, 0);
@@ -442,6 +457,7 @@ function teleportPlayerIfOob() {
     }
 }
 
+//converts fov from one aspect ratio to another - useful for mobile view
 function convertFov(fov, vw, vh) {
     const DEVELOPER_SCREEN_ASPECT_RATIO_HEIGHT = 10;
     const DEVELOPER_SCREEN_ASPECT_RATIO_WIDTH = 16;
@@ -458,6 +474,7 @@ function convertFov(fov, vw, vh) {
     );
 }
 
+// ran every frame
 function animate() {
     const deltaTime = Math.min(0.05, clock.getDelta()) / STEPS_PER_FRAME;
 
@@ -516,5 +533,5 @@ function animate() {
         audioPlayer.volume = 0.1; //lower audio player
     }
 
-    requestAnimationFrame(animate);
+    requestAnimationFrame(animate); // run the same thing again
 }
