@@ -100,7 +100,7 @@
         },
         {
             "id": "",
-            "pos": { "x": -95, "y": 35, "z": -381 },
+            "pos": { "x": -97, "y": 35, "z": -381 },
             "side": 4,
             "texture": "paintings/brassica.jpg",
             "size": { "x": 36.3, "y": 30, "z": 0.1 },
@@ -114,7 +114,7 @@
         },
         {
             "id": "",
-            "pos": { "x": -95, "y": 35, "z": -282 },
+            "pos": { "x": -97, "y": 35, "z": -282 },
             "side": 5,
             "texture": "paintings/brassica.jpg",
             "size": { "x": 36.3, "y": 30, "z": 0.1 },
