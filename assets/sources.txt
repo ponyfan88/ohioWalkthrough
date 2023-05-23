@@ -6,11 +6,14 @@ nationwideArena: https://en.wikipedia.org/wiki/Nationwide_Arena
 columbusZoo: https://www.tripadvisor.com/Attraction_Review-g50870-d110229-Reviews-Columbus_Zoo_and_Aquarium-Powell_Ohio.html
 legoland.jpg: https://www.experiencecolumbus.com/things-to-do/attractions/legoland-discovery-center/
 franklinParkConservatory.jpg: https://www.tripadvisor.com/Attraction_Review-g50226-d269061-Reviews-Franklin_Park_Conservatory_and_Botanical_Gardens-Columbus_Ohio.html
+
 Hotels:
 hilton.jpg: https://www.experiencecolumbus.com/listing/hilton-columbus-downtown/9257/
 joseph.jpg: https://www.pizzuti.com/projects/le-meridien-columbus-the-joseph
 sonesta.jpg: https://www.sonesta.com/sonesta-hotels-resorts/oh/columbus/sonesta-columbus-downtown
 sheraton.jpg: https://www.hotel-online.com/tag/sheraton-columbus-hotel-at-capitol-square/
+residence.jpg: https://www.marriott.com/en-us/hotels/cmhrd-residence-inn-columbus-downtown/photos/
+
 Food:
 haus.png: https://www.yelp.com/biz_photos/schmidts-sausage-haus-columbus-5?select=e9_gKmoGN-mhPPtZEI5R_Q
 hot chicken takeover.jpg: https://hotchickentakeover.com/our-story/
