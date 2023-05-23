@@ -323,6 +323,34 @@
                 "floatFrequency": 1,
                 "floatAmount": 5
             }
+        },
+        {
+            "id": "",
+            "pos": { "x": 143, "y": 15, "z": -530 },
+            "side": 3,
+            "texture": "paintings/anmol.jpg",
+            "size": { "x": 20, "y": 4, "z": 23 },
+            "transparent": true,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "world famous celebrity almno"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": -143, "y": 15, "z": -530 },
+            "side": 3,
+            "texture": "paintings/anmol.jpg",
+            "size": { "x": 20, "y": 4, "z": 23 },
+            "transparent": true,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "world famous celebrity almno"
+            }
         }
     ]
 }
