@@ -17,5 +17,8 @@ residence.jpg: https://www.marriott.com/en-us/hotels/cmhrd-residence-inn-columbu
 Food:
 haus.png: https://www.yelp.com/biz_photos/schmidts-sausage-haus-columbus-5?select=e9_gKmoGN-mhPPtZEI5R_Q
 hot chicken takeover.jpg: https://hotchickentakeover.com/our-story/
-marcellas: https://www.yelp.com/biz_photos/marcellas-columbus-7
-northstar: https://www.yelp.com/biz_photos/northstar-caf%C3%A9-columbus-5
+marcella.jpg: https://www.yelp.com/biz_photos/marcellas-columbus-7
+northstar.jpg: https://www.yelp.com/biz_photos/northstar-caf%C3%A9-columbus-5
+franks.jpg: https://www.yelp.com/biz_photos/dirty-franks-hot-dog-palace-columbus
+fox.jpg: https://www.yelp.com/biz_photos/fox-in-the-snow-cafe-columbus-2?select=tNbp_pFOlkOhQK3ROV0FYg
+brassica.jpg: https://www.yelp.com/biz_photos/brassica-columbus?select=-O1ZKpGVU3LPOdXkkdGfiw
