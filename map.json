@@ -81,7 +81,7 @@
             "doublesided": false,
             "type": "painting-clickable",
             "data": {
-                "description": ""
+                "description": "\"At Hot Chicken Takeover we serve up juicy, perfectly-fried Nashville Hot Chicken. Come for the chicken, stay for the people.\" - Joe D, the owner of Hot Chicken Takeover."
             }
         },
         {
@@ -102,14 +102,14 @@
             "id": "",
             "pos": { "x": -97, "y": 35, "z": -282 },
             "side": 5,
-            "texture": "paintings/brassica.jpg",
+            "texture": "paintings/marcella.jpg",
             "size": { "x": 36.3, "y": 30, "z": 0.1 },
             "transparent": false,
             "pixelated": false,
             "doublesided": false,
             "type": "painting-clickable",
             "data": {
-                "description": ""
+                "description": "Marcella's is a bustling Italian restaurant where you can forget your worries, live in the moment, and appreciate the quality of everything life has to offer. The food is real Italian - simple and uncomplicated."
             }
         },
         {
