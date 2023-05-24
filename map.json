@@ -356,11 +356,25 @@
             "id": "",
             "pos": { "x": -175, "y": 35, "z": -480 },
             "side": 5,
-            "texture": "paintings/eastonTransit.jpg",
+            "texture": "paintings/Greyhound.jpg",
             "size": { "x": 45, "y": 30, "z": 0.1 },
             "transparent": false,
             "pixelated": false,
             "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "the Greyhound bus service is availible in ohio, and is mentioned on ohios official website."
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": -215, "y": 35, "z": -530 },
+            "side": 0,
+            "texture": "paintings/eastonTransit.jpg",
+            "size": { "x": 0.1, "y": 30, "z": 40 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": true,
             "type": "painting-clickable",
             "data": {
                 "description": "The COTA Easton Transit center"
