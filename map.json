@@ -100,7 +100,7 @@
         },
         {
             "id": "",
-            "pos": { "x": -97, "y": 35, "z": -282 },
+            "pos": { "x": -105, "y": 35, "z": -282 },
             "side": 5,
             "texture": "paintings/marcella.jpg",
             "size": { "x": 36.3, "y": 30, "z": 0.1 },
@@ -128,7 +128,7 @@
         },
         {
             "id": "",
-            "pos": { "x": -185, "y": 35, "z": -381 },
+            "pos": { "x": -187, "y": 35, "z": -381 },
             "side": 4,
             "texture": "paintings/franks.jpg",
             "size": { "x": 53.3807829181, "y": 30, "z": 0.1 },
@@ -142,7 +142,7 @@
         },
         {
             "id": "",
-            "pos": { "x": -137, "y": 35, "z": -381 },
+            "pos": { "x": -139, "y": 35, "z": -381 },
             "side": 4,
             "texture": "paintings/fox.jpg",
             "size": { "x": 40, "y": 30, "z": 0.1 },
@@ -156,7 +156,7 @@
         },
         {
             "id": "",
-            "pos": { "x": 215, "y": 35, "z": -331.5 },
+            "pos": { "x": 217, "y": 35, "z": -331.5 },
             "side": 1,
             "texture": "paintings/nationwideArena.jpg",
             "size": { "x": 0.1, "y": 30, "z": 45 },
@@ -382,10 +382,10 @@
         },
         {
             "id": "",
-            "pos": { "x": -125, "y": 35, "z": -480 },
+            "pos": { "x": -123, "y": 35, "z": -480 },
             "side": 5,
             "texture": "paintings/scooter.jpg",
-            "size": { "x": 40, "y": 30, "z": 0.1 },
+            "size": { "x": 53.4, "y": 30, "z": 0.1 },
             "transparent": false,
             "pixelated": false,
             "doublesided": true,
