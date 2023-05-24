@@ -1,208 +1,73 @@
 import mapData from "./map.json" assert { type: "json" };
 import musicData from "./music.json" assert { type: "json" };
-import { OBB } from "three/addons/math/OBB.js";
+
 import * as THREE from "three";
 import * as PAINT from "painting";
 
-const CAMERA_FOV = 75;
-const DEBUG = true; // show walls, color floors, etc.
-const DEBUG_VELOCITY = false;
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-// copy and pasted early version of firstpersoncontrols. works well enough. might be changed later.
-let firstPersonControls = function (
-    camera,
-    MouseMoveSensitivity = 0.002,
-    speed = 800.0,
-    height = 30.0
-) {
-    let scope = this;
+import { Octree } from "three/addons/math/Octree.js";
+import { OctreeHelper } from "three/addons/helpers/OctreeHelper.js";
 
-    scope.MouseMoveSensitivity = MouseMoveSensitivity;
-    scope.speed = speed;
-    scope.height = height;
-    scope.click = false;
+import { Capsule } from "three/addons/math/Capsule.js";
 
-    let moveForward = false;
-    let moveBackward = false;
-    let moveLeft = false;
-    let moveRight = false;
-    let run = false;
+const clock = new THREE.Clock();
 
-    let velocity = new THREE.Vector3();
-    let direction = new THREE.Vector3();
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x606060);
+scene.fog = new THREE.Fog(0x606060, 10, 20);
 
-    let prevTime = performance.now();
+let world = new THREE.Group();
+const ws = 0.03; // the paintings are made large, so we downscale them to 3% their size.
+world.scale.set(ws, ws, ws);
 
-    camera.rotation.set(0, 0, 0);
+const camera = new THREE.PerspectiveCamera(
+    convertFov(90, window.innerWidth, window.innerHeight),
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+);
+// determines what way is up
+camera.rotation.order = "YXZ";
 
-    let pitchObject = new THREE.Object3D();
-    pitchObject.add(camera);
+let light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
+light.position.set(0, 100, 0.4);
+scene.add(light);
 
-    let yawObject = new THREE.Object3D();
-    yawObject.position.y = 10;
-    yawObject.add(pitchObject);
+let dirLight = new THREE.SpotLight(0xffffff, 0.5, 0.0, 180.0);
+dirLight.color.setHSL(0.1, 1, 0.95);
+dirLight.position.set(0, 300, 100);
+dirLight.castShadow = true;
+dirLight.lookAt(new THREE.Vector3());
+scene.add(dirLight);
 
-    let PI_2 = Math.PI / 2;
+dirLight.shadow.mapSize.width = 4096;
+dirLight.shadow.mapSize.height = 4096;
+dirLight.shadow.camera.far = 10;
 
-    let onMouseMove = function (event) {
-        if (!scope.enabled) {
-            return;
-        }
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+document.body.appendChild(renderer.domElement);
 
-        let movementX =
-            event.movementX || event.mozMovementX || event.webkitMovementX || 0;
-        let movementY =
-            event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+const STEPS_PER_FRAME = 5;
 
-        yawObject.rotation.y -= movementX * scope.MouseMoveSensitivity;
-        pitchObject.rotation.x -= movementY * scope.MouseMoveSensitivity;
+const worldOctree = new Octree();
 
-        pitchObject.rotation.x = Math.max(
-            -PI_2,
-            Math.min(PI_2, pitchObject.rotation.x)
-        );
-    };
+const playerCollider = new Capsule(
+    new THREE.Vector3(0, 0.35, 0),
+    new THREE.Vector3(0, 1, 0),
+    0.35
+);
 
-    let onKeyDown = function (event) {
-        switch (event.keyCode) {
-            case 38: // up
-            case 87: // w
-                moveForward = true;
-                break;
+const playerVelocity = new THREE.Vector3();
+const playerDirection = new THREE.Vector3();
 
-            case 37: // left
-            case 65: // a
-                moveLeft = true;
-                break;
-
-            case 40: // down
-            case 83: // s
-                moveBackward = true;
-                break;
-
-            case 39: // right
-            case 68: // d
-                moveRight = true;
-                break;
-
-            case 16: // shift
-                run = true;
-                break;
-        }
-    }.bind(this);
-
-    let onKeyUp = function (event) {
-        switch (event.keyCode) {
-            case 38: // up
-            case 87: // w
-                moveForward = false;
-                break;
-
-            case 37: // left
-            case 65: // a
-                moveLeft = false;
-                break;
-
-            case 40: // down
-            case 83: // s
-                moveBackward = false;
-                break;
-
-            case 39: // right
-            case 68: // d
-                moveRight = false;
-                break;
-
-            case 16: // shift
-                run = false;
-                break;
-        }
-    }.bind(this);
-
-    let onMouseDownClick = function (event) {
-        if (!scope.enabled) {
-            return;
-        }
-        scope.click = true;
-    }.bind(this);
-
-    let onMouseUpClick = function (event) {
-        if (!scope.enabled) {
-            return;
-        }
-        scope.click = false;
-    }.bind(this);
-
-    scope.dispose = function () {
-        document.removeEventListener("mousemove", onMouseMove, false);
-        document.removeEventListener("keydown", onKeyDown, false);
-        document.removeEventListener("keyup", onKeyUp, false);
-        document.removeEventListener("mousedown", onMouseDownClick, false);
-        document.removeEventListener("mouseup", onMouseUpClick, false);
-    };
-
-    document.addEventListener("mousemove", onMouseMove, false);
-    document.addEventListener("keydown", onKeyDown, false);
-    document.addEventListener("keyup", onKeyUp, false);
-    document.addEventListener("mousedown", onMouseDownClick, false);
-    document.addEventListener("mouseup", onMouseUpClick, false);
-
-    scope.enabled = false;
-
-    scope.getObject = function () {
-        return yawObject;
-    };
-
-    scope.update = function () {
-        let time = performance.now();
-        let delta = (time - prevTime) / 1000;
-
-        if (scope.enabled) {
-            velocity.y -= 9.8 * 100.0 * delta;
-            velocity.x -= velocity.x * 10.0 * delta;
-            velocity.z -= velocity.z * 10.0 * delta;
-
-            direction.z = Number(moveForward) - Number(moveBackward);
-            direction.x = Number(moveRight) - Number(moveLeft);
-            direction.normalize();
-
-            let currentSpeed = scope.speed;
-
-            if (run && (moveForward || moveBackward || moveLeft || moveRight)) {
-                currentSpeed = currentSpeed + currentSpeed * 1.1;
-            }
-
-            if (moveForward || moveBackward) {
-                velocity.z -= direction.z * currentSpeed * delta;
-            }
-
-            if (moveLeft || moveRight) {
-                velocity.x -= direction.x * currentSpeed * delta;
-            }
-
-            scope.getObject().translateX(-velocity.x * delta);
-            scope.getObject().translateZ(velocity.z * delta);
-
-            scope.getObject().position.y += velocity.y * delta;
-        }
-        prevTime = time;
-
-        scope.getObject().position.y = scope.height; // needs to be in update or else the camera falls
-    };
-
-    scope.stop = function (mov) {
-        console.log(velocity)
-        velocity.x *= -2
-        velocity.z *= -2
-        console.log(velocity)
-    };
-
-    scope.get = function () {
-        return direction;
-    };
-
-    scope.getObject().position.y = scope.height;
-};
+let rotatingSigns = []; // signs to rotate constantly
+let floatingSigns = []; // signs to rotate constantly
 
 let instructions = document.querySelector("#instructions");
 
@@ -212,24 +77,6 @@ let crosshair = document.getElementById("crosshair");
 let songTitle = document.getElementById("song-title");
 let buttonAdjacentBox = document.getElementById("button-adjacent-box");
 
-let camera;
-let scene;
-let renderer;
-let controls;
-let raycaster;
-let world;
-
-let interacted = false;
-
-let wallMeshes = [];
-
-let cameraPos;
-let cameraDirection;
-
-let uniquePaintings = {};
-
-let rotatingSigns = []; // signs to rotate constantly
-
 let audioPlayer = new Audio("assets/audio/test.mp3");
 let songIndex = -1;
 let sourceSongs = [...musicData.songs];
@@ -238,6 +85,7 @@ let songs = [];
 
 setupAudio();
 
+// sets up audio and events for music changing
 function setupAudio() {
     scrambleMusic();
 
@@ -256,6 +104,7 @@ function setupAudio() {
     });
 }
 
+// makes a new playlist
 function scrambleMusic() {
     sourceSongs = [...musicData.songs];
     songIndex = -1;
@@ -270,9 +119,10 @@ function scrambleMusic() {
     }
 }
 
+// when we click previous song, go back a song
 document.getElementById("previous-button").onclick = function () {
     console.log(songIndex);
-    if (songIndex <= 0) {
+    if (songIndex <= 0) { // if we are at the first song, make a NEW playlist.
         audioPlayer.pause();
         audioPlayer.currentTime = 0;
         scrambleMusic();
@@ -291,11 +141,12 @@ document.getElementById("previous-button").onclick = function () {
     songChanged();
 };
 
+// when we click next, skip the current song
 document.getElementById("next-button").onclick = function () {
     console.log(songIndex);
     console.log(musicData.songs.length);
 
-    if (songIndex == musicData.songs.length - 1) {
+    if (songIndex == musicData.songs.length - 1) { // if we've reached the end of our playlist, shuffle us a new one
         console.log("reached end of songs. resetting!");
         audioPlayer.pause();
         audioPlayer.currentTime = 0;
@@ -317,6 +168,7 @@ document.getElementById("next-button").onclick = function () {
 
 let audioPaused = false;
 
+// pause the music when we click the pause button
 document.getElementById("pause-button").onclick = function () {
     if (audioPaused) {
         audioPlayer.play();
@@ -333,198 +185,237 @@ document.getElementById("pause-button").onclick = function () {
     songChanged();
 };
 
-/*
-tempMesh.translateX(50);
-//tempMesh.translateY(50);
-tempMesh.geometry.userData = {}
-tempMesh.geometry.userData.obb = new OBB().fromBox3(tempMesh.geometry.boundingBox)
-tempMesh.userData.obb = new OBB();
-*/
+// update the buttons and song name to reflect current song
+function songChanged() {
+    songTitle.innerText = shownSongs[songIndex];
+    buttonAdjacentBox.innerText =
+        songIndex + 1 + "/" + musicData.songs.length + "\u00A0";
+}
 
-let playerGeometry = new THREE.BoxGeometry(1, 1, 1);
-playerGeometry.computeBoundingBox();
-const playerMesh = new THREE.Mesh(
-    playerGeometry,
-    new THREE.MeshBasicMaterial({ color: 0xff0000 })
-);
+// when we click the controls box on the main page, request a pointer lock
+document.getElementById("instructions").onclick = function () {
+    document.body.requestPointerLock();
+};
 
-playerMesh.geometry.userData = {};
-playerMesh.geometry.userData.obb = new OBB().fromBox3(
-    playerMesh.geometry.boundingBox
-);
-playerMesh.userData.obb = new OBB();
-playerMesh.matrixAutoUpdate = true;
+document.addEventListener("pointerlockchange", pointerLockChanged, false);
+document.addEventListener("mozpointerlockchange", pointerLockChanged, false);
 
-let cvelo
-let cveloPREVIOUS
+let interacted = false;
+let controlsEnabled = false;
 
-init();
-animate();
-
-function init() {
-    //source for all audio: https://www.youtube.com/playlist?list=PLH88srMwnAUXRdIIk6tJPgSgwG4B5gvC9
-    audioPlayer.loop = false; // dont loop audio
-    audioPlayer.volume = 0; // muted by default for no particular reason. we set the volume later once we unpause.
-    //audioPlayer.
-    console.log("Audio Player Created");
-
-    camera = new THREE.PerspectiveCamera(
-        convertFov(CAMERA_FOV, window.innerWidth, window.innerHeight),
-        window.innerWidth / window.innerHeight,
-        0.1,
-        3000
-    );
-
-    world = new THREE.Group();
-
-    raycaster = new THREE.Raycaster(
-        camera.getWorldPosition(new THREE.Vector3()),
-        camera.getWorldDirection(new THREE.Vector3())
-    );
-
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xffffff);
-    scene.fog = new THREE.Fog(0xffffff, 0, 2000);
-    //scene.fog = new THREE.FogExp2 (0xffffff, 0.007);
-
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.shadowMap.enabled = true;
-    document.body.appendChild(renderer.domElement);
-    renderer.domElement.id = "canvasse";
-    renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
-
-    window.addEventListener(
-        "resize",
-        function () {
-            camera.aspect = window.innerWidth / window.innerHeight;
-
-            camera.fov = convertFov(
-                CAMERA_FOV,
-                window.innerWidth,
-                window.innerHeight
-            );
-            camera.updateProjectionMatrix();
-
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        },
-        false
-    );
-
-    let light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
-    light.position.set(0, 100, 0.4);
-    scene.add(light);
-
-    let dirLight = new THREE.SpotLight(0xffffff, 0.5, 0.0, 180.0);
-    dirLight.color.setHSL(0.1, 1, 0.95);
-    dirLight.position.set(0, 300, 100);
-    dirLight.castShadow = true;
-    dirLight.lookAt(new THREE.Vector3());
-    scene.add(dirLight);
-
-    dirLight.shadow.mapSize.width = 4096;
-    dirLight.shadow.mapSize.height = 4096;
-    dirLight.shadow.camera.far = 3000;
-
-    //let dirLightHeper = new THREE.SpotLightHelper( dirLight, 10 );
-    //scene.add( dirLightHeper );
-
-    controls = new firstPersonControls(camera);
-
-    // pointer lock object forking for cross browser
-    document.body.requestPointerLock =
-        document.body.requestPointerLock || document.body.mozRequestPointerLock;
-    document.exitPointerLock =
-        document.exitPointerLock || document.mozExitPointerLock;
-
-    // when we click request the pointer lock
-    document.getElementById("instructions").onclick = function () {
-        document.body.requestPointerLock();
-    };
-
-    // pointer lock event listeners
-    // Hook pointer lock state change events for different browsers
-    document.addEventListener("pointerlockchange", pointerLockChanged, false); //<-- when requested, we need to run the lockchangealert script
-    document.addEventListener(
-        "mozpointerlockchange",
-        pointerLockChanged,
-        false
-    );
-
-    function pointerLockChanged() {
-        if (
-            document.pointerLockElement === document.body ||
-            document.mozPointerLockElement === document.body
-        ) {
-            if (!interacted) {
-                interacted = true;
-                audioPlayer.play(); // chrome developers decided to only play audio once the user presses something on the page
-            }
-
-            controls.enabled = true;
-            instructions.style.display = "none";
-
-            console.log("The pointer lock status is now locked");
-        } else {
-            controls.enabled = false;
-            instructions.style.display = "-webkit-box";
-
-            console.log("The pointer lock status is now unlocked");
+// makes our pointer dissapear! also initializes the whole audio system and everything.
+function pointerLockChanged() {
+    if (
+        document.pointerLockElement === document.body ||
+        document.mozPointerLockElement === document.body
+    ) {
+        if (!interacted) {
+            interacted = true;
+            audioPlayer.play(); // chrome developers decided to only play audio once the user presses something on the page
         }
+
+        instructions.style.display = "none";
+        controlsEnabled = true;
+
+        console.log("The pointer lock status is now locked");
+    } else {
+        instructions.style.display = "-webkit-box";
+        controlsEnabled = false;
+
+        console.log("The pointer lock status is now unlocked");
+    }
+}
+
+instructions.style.display = "-webkit-box";
+
+let raycaster = new THREE.Raycaster(
+    camera.getWorldPosition(new THREE.Vector3()),
+    camera.getWorldDirection(new THREE.Vector3())
+);
+
+const keyStates = {};
+
+const vector1 = new THREE.Vector3();
+const vector2 = new THREE.Vector3();
+const vector3 = new THREE.Vector3();
+
+// self-explanitory
+document.addEventListener("keydown", (event) => {
+    keyStates[event.code] = true;
+});
+
+// self-explanitory
+document.addEventListener("keyup", (event) => {
+    keyStates[event.code] = false;
+});
+
+// self-explanitory
+document.body.addEventListener("mousemove", (event) => {
+    if (document.pointerLockElement === document.body) {
+        camera.rotation.y -= event.movementX / 500;
+        camera.rotation.x -= event.movementY / 500;
+    }
+});
+
+window.addEventListener("resize", onWindowResize);
+
+// function that changes camera FOV and renderer resolution on screen change.
+// this is why we made convertFov()
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    camera.fov = convertFov(90, window.innerWidth, window.innerHeight);
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+// does player collisions.
+function playerCollisions() {
+    const result = worldOctree.capsuleIntersect(playerCollider);
+
+    if (result) { //if we've collided, move back accordingly
+        playerCollider.translate(result.normal.multiplyScalar(result.depth));
+    }
+}
+
+// update the player position, does all the friction work and moves the camera.
+function updatePlayer(deltaTime) {
+    let damping = Math.exp(-10 * deltaTime) - 1;
+
+    const deltaPosition = playerVelocity.clone().multiplyScalar(deltaTime);
+    playerCollider.translate(deltaPosition);
+
+    playerVelocity.addScaledVector(playerVelocity, damping);
+
+    playerCollisions();
+
+    camera.position.copy(playerCollider.end);
+}
+
+// same thing as below without cross product
+function getForwardVector() {
+    camera.getWorldDirection(playerDirection);
+    playerDirection.y = 0;
+    playerDirection.normalize();
+
+    return playerDirection;
+}
+
+// gets a much better player direction. the player direction is normally all jumbled, but you can use trig (or threejs functions) to un-jumble it.
+function getSideVector() {
+    camera.getWorldDirection(playerDirection);
+    playerDirection.y = 0;
+    playerDirection.normalize();
+    playerDirection.cross(camera.up);
+
+    return playerDirection;
+}
+
+// gets key states and adds player velocity based on them 
+// (w - go forward)
+// (a - go left)
+// etc etc
+function controls(deltaTime) {
+    // gives a bit of air control
+    let speedDelta = deltaTime * 25;
+
+    if (keyStates["ShiftLeft"]) {
+        speedDelta *= 2; // faster on sprint
     }
 
-    controls.enabled = false;
-    instructions.style.display = "-webkit-box";
+    if (keyStates["KeyW"]) {
+        playerVelocity.add(getForwardVector().multiplyScalar(speedDelta));
+    }
 
-    scene.add(controls.getObject());
+    if (keyStates["KeyS"]) {
+        playerVelocity.add(getForwardVector().multiplyScalar(-speedDelta));
+    }
 
-    // floor
+    if (keyStates["KeyA"]) {
+        playerVelocity.add(getSideVector().multiplyScalar(-speedDelta));
+    }
 
-    // instantialize loop variables
-    let floorGeometry;
-    let floorMaterial;
-    let floor;
+    if (keyStates["KeyD"]) {
+        playerVelocity.add(getSideVector().multiplyScalar(speedDelta));
+    }
+}
 
-    // for every plane in the planes section of map.json
-    mapData.planes.forEach((planeJSON) => {
-        // plane geometry is formed with 4 numbers
-        floorGeometry = new THREE.PlaneGeometry(
-            planeJSON.plane[0],
-            planeJSON.plane[1],
-            planeJSON.plane[2],
-            planeJSON.plane[3]
-        );
+const loader = new GLTFLoader().setPath("assets/3d/");
 
-        // give every floor plane a basic material
-        floorMaterial = new THREE.MeshLambertMaterial();
+// there are two different models, one for collisions and one for the room we display.
+// this loads both of them
+loader.load("collision.gltf", (gltf) => {
+    gltf.scene.rotation.y = Math.PI;
 
-        // if we are in debug mode give floors a more visible color
-        if (DEBUG) {
-            floorMaterial.color.setHSL(0.095, 1, 0.75);
+    scene.add(gltf.scene);
+
+    worldOctree.fromGraphNode(gltf.scene);
+
+    gltf.scene.traverse((child) => {
+        if (child.isMesh) {
+            child.castShadow = false;
+            child.receiveShadow = false;
+            child.material = new THREE.MeshLambertMaterial({
+                color: 0x0000ff,
+                transparent: true,
+                opacity: 0,
+                depthWrite: false
+            });
         }
-
-        // the floor
-        floor = new THREE.Mesh(floorGeometry, floorMaterial);
-
-        // shadows should be cast onto this surface
-        floor.receiveShadow = true;
-
-        // flip it so that if faces down
-        floor.rotation.x = -Math.PI / 2;
-
-        floor.position.x = planeJSON.pos.x;
-        floor.position.y = planeJSON.pos.y;
-        floor.position.z = planeJSON.pos.z;
-
-        world.add(floor);
     });
 
-    // world
+    const helper = new OctreeHelper(worldOctree);
+    helper.visible = false;
+    scene.add(helper);
 
-    // paintings/signs
+    // once we load the collisions, load the visuals
+    loader.load("room.gltf", (gltf) => {
+        gltf.scene.rotation.y = Math.PI;
 
+        scene.add(gltf.scene);
+
+        gltf.scene.traverse((child) => {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+                child.material = new THREE.MeshLambertMaterial({
+                    color: 0xf0f0f0,
+                    side: 2,
+                    shading: THREE.FlatShading,
+                    transparent: false,
+                    opacity: 1
+                });
+            }
+        });
+
+        const helper = new OctreeHelper(worldOctree);
+        helper.visible = false;
+        scene.add(helper);
+
+        addPaintings();
+    });
+
+    loader.load("scene.gltf", function (gltf) {
+        const model = gltf.scene;
+        model.position.setX(3);
+        model.position.setY(0);
+        model.position.setZ(-19.75);
+        model.rotation.y += 1.57;
+        scene.add(model);
+    })
+
+    loader.load("scene.gltf", function (gltf) {
+        const model = gltf.scene;
+        model.position.setX(-5.5);
+        model.position.setY(0);
+        model.position.setZ(-19.75);
+        model.rotation.y += 1.57;
+        scene.add(model);
+    })
+});
+
+// adds paitings to scene. these are the pictures. reads from JSON.
+function addPaintings() {
     // instantialize loop variables
     let painting;
 
@@ -533,169 +424,48 @@ function init() {
         painting = PAINT.makePaintingFromJSON(paintingJSON);
         painting.userData.type = paintingJSON.type;
         painting.userData.data = paintingJSON.data;
+
         world.add(painting);
 
+        /*
         if (paintingJSON.id != "") {
             uniquePaintings[paintingJSON.id] = painting;
-        }
+        }*/
 
         if (paintingJSON.type == "rotating-sign") {
             rotatingSigns.push(painting);
         }
-    });
 
-    let wallMesh;
-    let wallGeometry;
-
-    mapData.walls.forEach((wallJSON) => {
-        wallGeometry = new THREE.BoxGeometry(
-            wallJSON.size.x,
-            wallJSON.size.y,
-            wallJSON.size.z
-        );
-
-        wallGeometry.computeBoundingBox();
-
-        // if using debug, give it a specific color
-        if (DEBUG) {
-            wallMesh = new THREE.Mesh(
-                wallGeometry,
-                new THREE.MeshBasicMaterial({ color: 0x00ffff })
-            );
-        } else {
-            wallMesh = new THREE.Mesh(wallGeometry);
+        if (paintingJSON.type == "floating-sign") {
+            floatingSigns.push(
+                {
+                    "painting" : painting,
+                    "startingY" : paintingJSON.pos.y,
+                    "floatFrequency": paintingJSON.data.floatFrequency,
+                    "floatAmount": paintingJSON.data.floatAmount,
+                }
+            )
         }
-
-        // move the mesh into the corrent position, otherwise it will be at (0,0,0)
-        wallMesh.position.x = wallJSON.pos.x;
-        wallMesh.position.y = wallJSON.pos.y;
-        wallMesh.position.z = wallJSON.pos.z;
-
-        wallMesh.geometry.userData = {};
-        wallMesh.geometry.userData.obb = new OBB().fromBox3(
-            wallMesh.geometry.boundingBox
-        );
-        wallMesh.userData.obb = new OBB();
-
-        wallMeshes.push(wallMesh);
-
-        world.add(wallMesh);
-
-        wallMesh.userData.obb.copy(wallMesh.geometry.userData.obb);
-        wallMesh.userData.obb.applyMatrix4(wallMesh.matrixWorld);
     });
-
-    world.add(playerMesh);
 
     scene.add(world);
+
+    animate();
 }
 
-function songChanged() {
-    songTitle.innerText = shownSongs[songIndex];
-    buttonAdjacentBox.innerText =
-        songIndex + 1 + "/" + musicData.songs.length + "\u00A0";
+
+//teleports the player if the camera falls (Out Of Bounds)
+function teleportPlayerIfOob() {
+    if (camera.position.y <= -25) {
+        playerCollider.start.set(0, 0.35, 0);
+        playerCollider.end.set(0, 1, 0);
+        playerCollider.radius = 0.35;
+        camera.position.copy(playerCollider.end);
+        camera.rotation.set(0, 0, 0);
+    }
 }
 
-function animate() {
-    requestAnimationFrame(animate);
-
-    cameraPos = camera.getWorldPosition(new THREE.Vector3());
-    cameraDirection = camera.getWorldDirection(new THREE.Vector3());
-
-    if (controls.enabled) {
-        rotatingSigns.forEach((element) => {
-            element.rotation.y += element.userData.data.rotationAmount;
-        });
-
-        crosshair.classList = "enabled";
-
-        audioPlayer.volume = 1; // unmute audio player
-
-        raycaster.set(cameraPos, cameraDirection);
-
-        let intersects = raycaster.intersectObjects(world.children);
-
-        if (intersects.length > 0) {
-            let intersect = intersects[0];
-
-            if (intersect.object.userData.type == "painting-clickable") {
-                description.innerText =
-                    intersect.object.userData.data.description;
-                description.classList = "enabled";
-            } else {
-                description.classList = "";
-            }
-        } else {
-            description.classList = "";
-        }
-    } else {
-        crosshair.classList = "";
-        audioPlayer.volume = 0.1; //lower audio player
-
-        controls.update.moveForward = false;
-        controls.update.moveBackward = false;
-        controls.update.moveRight = false;
-        controls.update.moveLeft = false;
-    }
-
-    playerMesh.position.x = cameraPos.x;
-    playerMesh.position.z = cameraPos.z;
-
-    // face the same. math stuff.
-    let playerAngle = Math.atan2(cameraDirection.x, cameraDirection.z);
-    playerMesh.rotation.y = playerAngle; 
-
-    cveloPREVIOUS = cvelo
-    cvelo = controls.get();
-
-    if (cvelo.x == 0) {
-        cvelo.x = cveloPREVIOUS.x
-    } 
-
-    if (cvelo.y == 0) {
-        cvelo.y = cveloPREVIOUS.y;
-    }
-
-    let avelo = rotate(cvelo.x, cvelo.z, playerAngle)
-
-    let velo = new THREE.Vector3(
-        avelo[0],
-        0,
-        avelo[1]
-    );
-
-    let playerRay = new THREE.Raycaster(playerMesh.position, velo);
-
-    let rayIntersects = playerRay.intersectObjects(wallMeshes);
-
-    if (DEBUG_VELOCITY) {
-        scene.add(
-            new THREE.ArrowHelper(
-                playerRay.ray.direction,
-                playerRay.ray.origin,
-                10,
-                0xff0000
-            )
-        );
-    }
-
-    for (let i = 0; i < rayIntersects.length; i++) {
-        if (DEBUG) {
-            rayIntersects[i].object.material.color.set(0xff0000);
-        }
-
-        if (rayIntersects[i].distance <= 4) {
-            console.log("HITTING A DAMN WALL")
-
-            controls.stop(avelo)
-        }
-    }
-
-    controls.update();
-
-    renderer.render(scene, camera);
-}
-
+//converts fov from one aspect ratio to another - useful for mobile view
 function convertFov(fov, vw, vh) {
     const DEVELOPER_SCREEN_ASPECT_RATIO_HEIGHT = 10;
     const DEVELOPER_SCREEN_ASPECT_RATIO_WIDTH = 16;
@@ -712,10 +482,64 @@ function convertFov(fov, vw, vh) {
     );
 }
 
-function rotate(x, y, angle) {
-    let cos = Math.cos(angle),
-        sin = Math.sin(angle),
-        nx = (cos * (-1 * x)) + (sin * (y)),
-        ny = (cos * (y)) - (sin * (-1 * x));
-    return [nx, ny];
+// ran every frame
+function animate() {
+    const deltaTime = Math.min(0.05, clock.getDelta()) / STEPS_PER_FRAME;
+
+    // we look for collisions in substeps to mitigate the risk of
+    // an object traversing another too quickly for detection.
+
+    if (controlsEnabled) {
+        for (let i = 0; i < STEPS_PER_FRAME; i++) {
+            controls(deltaTime);
+    
+            updatePlayer(deltaTime);
+    
+            teleportPlayerIfOob();
+        }
+
+        rotatingSigns.forEach((element) => {
+            element.rotation.y += element.userData.data.rotationAmount;
+        });
+
+        floatingSigns.forEach((element) => {
+            element.painting.position.y = element.startingY + Math.sin(performance.now() / 180 * element.floatFrequency) * element.floatAmount
+        });
+
+        audioPlayer.volume = 1; // unmute audio player
+
+        raycaster.set(
+            camera.getWorldPosition(new THREE.Vector3()),
+            camera.getWorldDirection(new THREE.Vector3())
+        );
+
+        let intersects = raycaster.intersectObjects(world.children);
+
+        if (intersects.length > 0) {
+            let intersect = intersects[0];
+
+            if (intersect.object.userData.type == "painting-clickable") {
+                description.innerText =
+                    intersect.object.userData.data.description;
+                description.classList = "enabled";
+
+                crosshair.classList = "enabled";
+            } else {
+                description.classList = "";
+
+                crosshair.classList = "";
+            }
+        } else {
+            description.classList = "";
+
+            crosshair.classList = "";
+        }
+
+        renderer.render(scene, camera);
+    } else {
+        crosshair.classList = "";
+        audioPlayer.volume = 0.1; //lower audio player
+    }
+
+    requestAnimationFrame(animate); // run the same thing again
 }
