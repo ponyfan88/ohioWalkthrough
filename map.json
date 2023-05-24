@@ -382,6 +382,20 @@
         },
         {
             "id": "",
+            "pos": { "x": -125, "y": 35, "z": -480 },
+            "side": 5,
+            "texture": "paintings/scooter.jpg",
+            "size": { "x": 40, "y": 30, "z": 0.1 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": true,
+            "type": "painting-clickable",
+            "data": {
+                "description": "Electric Scooters"
+            }
+        },
+        {
+            "id": "",
             "pos": { "x": -125, "y": 35, "z": -581 },
             "side": 4,
             "texture": "paintings/Amtrak.jpg",
