@@ -337,6 +337,20 @@
             "data": {
                 "description": "world famous celebrity almno"
             }
+        },
+        {
+            "id": "",
+            "pos": { "x": -175, "y": 35, "z": -581 },
+            "side": 4,
+            "texture": "paintings/johnGlenn.jpg",
+            "size": { "x": 45, "y": 30, "z": 0.1 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "John Glenn international airport"
+            }
         }
     ]
 }

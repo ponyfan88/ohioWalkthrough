@@ -22,3 +22,6 @@ northstar.jpg: https://www.yelp.com/biz_photos/northstar-caf%C3%A9-columbus-5
 franks.jpg: https://www.yelp.com/biz_photos/dirty-franks-hot-dog-palace-columbus
 fox.jpg: https://www.yelp.com/biz_photos/fox-in-the-snow-cafe-columbus-2?select=tNbp_pFOlkOhQK3ROV0FYg
 brassica.jpg: https://www.yelp.com/biz_photos/brassica-columbus?select=-O1ZKpGVU3LPOdXkkdGfiw
+
+transportation:
+johnGlenn.jpg: https://en.wikipedia.org/wiki/John_Glenn_Columbus_International_Airport
