@@ -335,7 +335,7 @@
             "doublesided": false,
             "type": "painting-clickable",
             "data": {
-                "description": "Ohio has a bunch of transportation options apart from the usual uber and lyft, with a high number of airports and the wonderful COTA bus system. transportation in ohio is cheap and efficient"
+                "description": "Ohio has a bunch of transportation options apart from the usual uber and lyft, with a high number of airports and the wonderful COTA bus system. throughout Cincinati there is also the Amtrak train system, going throughout Cincinati. transportation in ohio is cheap and efficient"
             }
         },
         {
@@ -392,6 +392,20 @@
             "type": "painting-clickable",
             "data": {
                 "description": "Electric Scooters"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": -125, "y": 35, "z": -581 },
+            "side": 4,
+            "texture": "paintings/Amtrak.jpg",
+            "size": { "x": 40, "y": 30, "z": 0.1 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": false,
+            "type": "painting-clickable",
+            "data": {
+                "description": "Amtrak #50"
             }
         }
     ]
