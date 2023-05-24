@@ -335,7 +335,7 @@
             "doublesided": false,
             "type": "painting-clickable",
             "data": {
-                "description": "world famous celebrity almno"
+                "description": "There are plenty of ways to get around Columbus aside from driving.  Columbus has many options for public transport for any distance.  You can see a few of the options for transportation in this wing of the museum"
             }
         },
         {
@@ -378,6 +378,20 @@
             "type": "painting-clickable",
             "data": {
                 "description": "The COTA Easton Transit center"
+            }
+        },
+        {
+            "id": "",
+            "pos": { "x": -125, "y": 35, "z": -480 },
+            "side": 5,
+            "texture": "paintings/scooter.jpg",
+            "size": { "x": 40, "y": 30, "z": 0.1 },
+            "transparent": false,
+            "pixelated": false,
+            "doublesided": true,
+            "type": "painting-clickable",
+            "data": {
+                "description": "Electric Scooters"
             }
         }
     ]

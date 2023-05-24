@@ -27,3 +27,4 @@ transportation:
 johnGlenn.jpg: https://en.wikipedia.org/wiki/John_Glenn_Columbus_International_Airport
 eastonTransit.jpg: https://www.transystems.com/our-projects/easton-transit-center/
 greyhound.jpg: https://en.wikipedia.org/wiki/Greyhound_Lines
+scooter.jpg: https://www.bizjournals.com/columbus/news/2018/07/11/scooter-sharing-system-debuts-in-columbus.html
